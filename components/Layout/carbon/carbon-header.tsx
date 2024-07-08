@@ -1,12 +1,10 @@
-"use client";
-
 import Link from "next/link";
 import { CarbonDrawerSidebar } from "./carbon-drawer-sidebar";
 import { StickyHeader } from "../sticky-header";
 import { HamburgerButton } from "../hamburger-button";
 import { Logo } from "@/components/logo";
 import { SearchWidget } from "@/components/search/search";
-import { HeaderMenuRight } from "../header-menu-right";
+import HeaderMenuRight from "../header-menu-right";
 
 export default function Header() {
   return (
@@ -23,7 +21,7 @@ export default function Header() {
           <Logo iconOnly={true} />
         </Link>
 
-        <SearchWidget />
+        {/* <SearchWidget /> */}
       </div>
 
       <HeaderMenuRight />

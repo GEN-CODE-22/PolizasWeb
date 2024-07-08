@@ -1,11 +1,12 @@
 import Header from "./carbon-header";
 import { CarbonSidebar } from "./carbon-sidebar";
 
-export default function CarbonLayout({
-  children,
-}: {
+import React, { FC } from "react";
+
+interface Props {
   children: React.ReactNode;
-}) {
+}
+const CarbonLayout: FC<Props> = ({ children }) => {
   return (
     <main className="flex min-h-screen flex-grow">
       <CarbonSidebar className="fixed hidden flex-col justify-between dark:bg-gray-50 xl:block" />
@@ -17,4 +18,6 @@ export default function CarbonLayout({
       </div>
     </main>
   );
-}
+};
+
+export default CarbonLayout;

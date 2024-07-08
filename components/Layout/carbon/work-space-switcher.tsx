@@ -1,31 +1,10 @@
+import { AppState, setServer } from "@/redux/slices/app";
+import { CatalogosState } from "@/redux/slices/catalogos";
 import cn from "@/utils/class-names";
-import { FC, useState } from "react";
+import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
+import { FC, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Text, Avatar, Select, type SelectOption } from "rizzui";
-
-const customOptions: SelectOption[] = [
-  {
-    label: "REDQ",
-    value: "redq@redq.io",
-    avatar: "https://s3.envato.com/files/368170631/REDQ.png",
-  },
-  {
-    label: "Apple",
-    value: "Apple@apple.com",
-    avatar:
-      "https://1.bp.blogspot.com/-IHIprxC2Za0/UBg14NttLLI/AAAAAAAAA28/nyBH-GeEX7Y/s1600/white-apple-logo-wallpaper.jpg",
-  },
-  {
-    label: "Microsoft",
-    value: "microsoft@microsoft.com",
-    avatar:
-      "https://ca16c2df-cdn.agilitycms.cloud/Attachments/NewItems/MS-thumbnail_20230620211556_0.jpg",
-  },
-  {
-    label: "Google",
-    value: "google@google.com",
-    avatar: "https://wallpapercave.com/wp/wp2860498.jpg",
-  },
-];
 
 interface Props {
   className?: string;
@@ -40,12 +19,36 @@ export const WorkSpaceSwitcher: FC<Props> = ({
   dropdownClassName,
   suffixClassName,
 }) => {
-  const [value, setValue] = useState(customOptions[0]);
+  const { server } = useSelector<StoreApp, AppState>((s) => s.app);
+
+  const { servidores } = useSelector<StoreApp, CatalogosState>(
+    (s) => s.catalogos
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [options, setOptions] = useState<SelectOption[]>([]);
+
+  useEffect(() => {
+    setOptions(
+      servidores.map((c) => {
+        return {
+          label: c,
+          value: c,
+        };
+      })
+    );
+  }, [servidores]);
+
+  const onChange = (value: SelectOption) => {
+    dispatch(setServer(value.value.toString()));
+  };
+
   return (
     <Select
-      options={customOptions}
-      value={value}
-      onChange={setValue}
+      options={options}
+      value={options.find((e) => e.value === server)}
+      onChange={onChange}
       displayValue={(value: SelectOption) => renderDisplayValue(value)}
       getOptionDisplayValue={(option) => renderOptionDisplayValue(option)}
       selectClassName={cn(
@@ -68,7 +71,7 @@ function renderDisplayValue(value: SelectOption) {
         <Text fontWeight="medium" className="text-gray-900">
           {value.label}
         </Text>
-        <Text className="text-gray-500">Select Workspace</Text>
+        <Text className="text-gray-500">Espacio de Trabajo</Text>
       </div>
     </div>
   );

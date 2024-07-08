@@ -9,10 +9,13 @@ import { ActionIcon } from "rizzui";
 import cn from "@/utils/class-names";
 
 import { useApplyColorPreset, useColorPresets } from "@/hooks/use-theme-color";
-import { usePresets } from "../config/color-presets";
 import { useDrawer } from "../Shared/drawer-views/use-drawer";
+import { usePresets } from "../config/color-presets";
 import { DrawerHeader } from "./drawer-header";
-import SettingsDrawer from "./settings-drawer";
+
+const SettingsDrawer = dynamic(() => import("./settings-drawer"), {
+  ssr: false,
+});
 
 export default function SettingsButton({
   className,

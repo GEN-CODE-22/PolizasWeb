@@ -1,10 +1,8 @@
-"use client";
-
 import { PiAlignLeft, PiAlignRight } from "react-icons/pi";
 import { RadioGroup } from "rizzui";
 import { useDirection } from "@/hooks/use-direction";
-import RadioBox from "@/components/settings/radio-box";
-import DrawerBlock from "@/components/settings/drawer-block";
+import { DrawerBlock } from "./drawer-block";
+import { RadioBox } from "./radio-box";
 
 const directionOptions = ["ltr", "rtl"];
 

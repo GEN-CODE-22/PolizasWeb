@@ -5,8 +5,9 @@ import { PiCheckBold } from "react-icons/pi";
 import cn from "@/utils/class-names";
 
 import { useColorPresetName, useColorPresets } from "@/hooks/use-theme-color";
-import DrawerBlock from "@/components/settings/drawer-block";
+
 import { usePresets } from "../config/color-presets";
+import { DrawerBlock } from "./drawer-block";
 
 export default function ColorOptions() {
   const { theme } = useTheme();
