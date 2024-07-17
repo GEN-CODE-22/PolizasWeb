@@ -3,9 +3,8 @@ import { HamburgerButton } from "../hamburger-button";
 import { StickyHeader } from "../sticky-header";
 import { Logo } from "@/components/logo";
 import { SearchWidget } from "@/components/search/search";
-
 import { Sidebar } from "./sidebar";
-import { HeaderMenuRight } from "../header-menu-right";
+import HeaderMenuRight from "../header-menu-right";
 
 export const Header = () => {
   return (
