@@ -46,6 +46,8 @@ import {
   PiUserPlusDuotone,
   PiShapesDuotone,
   PiNewspaperClippingDuotone,
+  PiInvoiceDuotone,
+  PiStackThin,
 } from "react-icons/pi";
 import { atom } from "jotai";
 import { routes } from "@/components/config/routes";
@@ -108,28 +110,26 @@ export const carbonMenuItems: MenuItemsType[] = [
       {
         name: "Poliza Ventas",
         description: "",
-        href: "#",
-        icon: PiShoppingCartDuotone,
-        subMenuItems: [
-          {
-            name: "Lista de Polizas",
-            href: "/poliza/list",
-            badge: "",
-          },
-          {
-            name: "Poliza Detalles",
-            href: "/poliza/details",
-            badge: "",
-          },
-          {
-            name: "Crear Poliza",
-            href: routes.eCommerce.createProduct,
-          },
-          {
-            name: "Editar Poliza",
-            href: routes.eCommerce.ediProduct(DUMMY_ID),
-          },
-        ],
+        href: "/poliza/ventas",
+        icon: PiInvoiceDuotone,
+      },
+      {
+        name: "Poliza Canceladas",
+        description: "",
+        href: "/poliza/canceladas",
+        icon: PiInvoiceDuotone,
+      },
+      {
+        name: "Poliza Cobranza",
+        description: "",
+        href: "/poliza/cobranza",
+        icon: PiInvoiceDuotone,
+      },
+      {
+        name: "Crear Poliza",
+        description: "",
+        href: "/poliza/create",
+        icon: PiStackThin,
       },
     ],
   },

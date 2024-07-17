@@ -1,4 +1,3 @@
-import { Account } from "@/interfaces";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface AppState {

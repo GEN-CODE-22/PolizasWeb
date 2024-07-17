@@ -92,7 +92,9 @@ export const UpdateCajaCuentas = (caja: CajaCuentas) => {
 };
 export const UpdateCuentaC = (cuentaC: CuentasContable) => {
   return async (dispatch: AppDispatch, _: () => StoreApp) => {
+    toast.loading("Guardando Cambios 💾");
     const cuentaCN = await SaveAndUpdateCuentaC(cuentaC);
+    toast.dismiss();
 
     if (!!cuentaC?.id && !!cuentaCN) {
       dispatch(setUpdateCuentasContable(cuentaCN));

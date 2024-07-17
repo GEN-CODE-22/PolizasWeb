@@ -59,6 +59,7 @@ export const DatePicker = ({
   const [isCalenderOpen, setIsCalenderOpen] = useState(false);
   const handleCalenderOpen = () => setIsCalenderOpen(true);
   const handleCalenderClose = () => setIsCalenderOpen(false);
+
   return (
     <div
       className={cn(

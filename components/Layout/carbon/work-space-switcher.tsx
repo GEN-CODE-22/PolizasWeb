@@ -42,12 +42,13 @@ export const WorkSpaceSwitcher: FC<Props> = ({
 
   const onChange = (value: SelectOption) => {
     dispatch(setServer(value.value.toString()));
+    window?.sessionStorage?.setItem("server", value.value.toString());
   };
 
   return (
     <Select
       options={options}
-      value={options.find((e) => e.value === server)}
+      value={options.find((e) => e.value === server) ?? ""}
       onChange={onChange}
       displayValue={(value: SelectOption) => renderDisplayValue(value)}
       getOptionDisplayValue={(option) => renderOptionDisplayValue(option)}

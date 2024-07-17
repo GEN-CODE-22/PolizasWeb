@@ -63,6 +63,7 @@ export const SaveAndUpdateCajaCuentas = async (
     return null;
   }
 };
+
 export const SaveAndUpdateCuentaC = async (
   cuentac: CuentasContable
 ): Promise<CuentasContable | null> => {
@@ -70,6 +71,46 @@ export const SaveAndUpdateCuentaC = async (
     const { status, data } = await api.post<CuentasContable>(
       "/api/Cuentas/SaveAndUpdate",
       cuentac
+    );
+
+    if (status === 200) {
+      return {
+        ...data,
+      };
+    }
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const RemoveCuentaC = async (
+  cuentac: CuentasContable
+): Promise<CuentasContable | null> => {
+  try {
+    const { status, data } = await api.post<CuentasContable>(
+      "/api/Cuentas/delete",
+      cuentac
+    );
+
+    if (status === 200) {
+      return {
+        ...data,
+      };
+    }
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const SaveAndUpdateUnidad = async (
+  unidad: UnidadOp
+): Promise<UnidadOp | null> => {
+  try {
+    const { status, data } = await api.post<UnidadOp>(
+      "/api/UnidadesOperativa/Save",
+      unidad
     );
 
     if (status === 200) {

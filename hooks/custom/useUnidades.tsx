@@ -11,6 +11,9 @@ import { UnidadOp } from "@/interfaces";
 import { DateCell } from "@/components/ui/date-cell";
 import { convertMoney } from "@/utils/tools";
 import { PiNotePencil } from "react-icons/pi";
+import { useDrawer } from "@/components/Shared/drawer-views/use-drawer";
+import { DrawerHeader } from "@/components/settings/drawer-header";
+import { FormUnidadO } from "@/components/content/catalogos/UnidadesOperativa/FormUnidadO";
 
 const filterState = {
   id: 0,
@@ -22,6 +25,8 @@ export const useUnidades = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [pageSize, setPageSize] = useState(10);
+
+  const { openDrawer, closeDrawer } = useDrawer();
 
   const { unidadesOp, loading } = useSelector<StoreApp, CatalogosState>(
     (s) => s.catalogos
@@ -38,32 +43,6 @@ export const useUnidades = () => {
       handleSort(value);
     },
   });
-
-  // const showFacturaFile = (pago: Pago) => {
-  //   dispatch(
-  //     openModal({
-  //       children: (
-  //         <ViewerPDF
-  //           file={`${process.env.URL_SERVER}/${pago?.cliente.unidad?.cveUnidad}_${pago?.folio}.pdf`}
-  //         />
-  //       ),
-  //       open: true,
-  //       backdropClick: false,
-  //       title: "Crear Factura ",
-  //       maxWidth: "lg",
-  //       fullWidth: true,
-  //       openBackdrop: true,
-  //     })
-  //   );
-  // };
-
-  // const edit = (pago: Pago) => {
-  //   router.push(`/pago/${pago.idPago}/edit`);
-  // };
-
-  // const cancelar = (pago: Pago) => {
-  //   router.push(`/pago/${pago.idPago}/cancelar`);
-  // };
 
   const onDeleteItem = useCallback(async (id: string) => {
     handleDelete(id);
@@ -89,6 +68,19 @@ export const useUnidades = () => {
     handleReset,
     applyFilters,
   } = useTable(unidadesOp, pageSize, filterState);
+
+  const edit = async (unidadOP: UnidadOp) => {
+    openDrawer({
+      view: (
+        <>
+          <DrawerHeader onClose={closeDrawer} />
+          <FormUnidadO unidad={unidadOP} />
+        </>
+      ),
+      placement: "right",
+      customSize: "420px",
+    });
+  };
 
   const columns = useMemo(
     () => [
@@ -163,11 +155,7 @@ export const useUnidades = () => {
               placement="top"
               color="invert"
             >
-              <ActionIcon
-                size="sm"
-                variant="outline"
-                onClick={() => console.log("first")}
-              >
+              <ActionIcon size="sm" variant="outline" onClick={() => edit(row)}>
                 <PiNotePencil className="h-4 w-4" />
               </ActionIcon>
             </Tooltip>

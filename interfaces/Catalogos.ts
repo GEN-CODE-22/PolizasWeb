@@ -13,11 +13,11 @@ export interface CajaCuentas {
 }
 
 export interface UnidadOp {
-  id: number;
+  id?: number;
   descripcion: string;
   cve_unidad: string;
   principal: number;
-  createAt: Date;
+  createAt?: Date;
 }
 
 export interface Account {

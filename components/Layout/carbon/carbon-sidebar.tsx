@@ -1,15 +1,12 @@
-"use client";
-
 import cn from "@/utils/class-names";
 import Link from "next/link";
-import { PiDotsThreeVerticalBold, PiHeadsetBold } from "react-icons/pi";
+import { PiHeadsetBold } from "react-icons/pi";
 import SimpleBar from "simplebar-react";
 import { CarbonSidebarMenu } from "./carbon-sidebar-menu";
 import { Logo } from "@/components/logo";
 import { WorkSpaceSwitcher } from "./work-space-switcher";
 import { NeedSupport } from "./need-support";
 import { FC } from "react";
-import { ProfileCardMenu } from "./profile-card-menu";
 
 interface Props {
   className?: string;
@@ -47,20 +44,19 @@ export const CarbonSidebar: FC<Props> = ({ className }) => {
 
         <div className="sticky bottom-0 bg-gray-0 dark:bg-gray-50 ">
           <NeedSupport
-            title="Need Support?"
-            text="Contact with one of our experts to get support."
+            title="Necesitas Soporte?"
+            text="Contacta a Julio Gonzalez de Sistemas."
             prefixIcon={<PiHeadsetBold className="h-5 w-5 text-gray-400" />}
             className="relative mx-6 before:absolute before:-start-6 before:bottom-full before:end-0 before:h-10 before:w-[calc(100%+48px)] before:bg-gradient-to-t before:from-gray-0 before:to-gray-0/30 before:dark:from-gray-50 before:dark:to-gray-50/30"
           />
         </div>
       </SimpleBar>
 
-      <div className="bg-gray-0 px-6 pb-3 dark:bg-gray-50">
+      {/* <div className="bg-gray-0 px-6 pb-3 dark:bg-gray-50">
         <ProfileCardMenu
-          title="Elsie Burnett"
-          designation="Chief Officer"
+          title={user}
+          designation={server}
           placement="top"
-          image="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars/avatar-11.webp"
           avatarClassName="!w-10 !h-10"
           icon={
             <PiDotsThreeVerticalBold
@@ -72,7 +68,7 @@ export const CarbonSidebar: FC<Props> = ({ className }) => {
           className={cn("mt-5 px-0 py-0")}
           buttonClassName="border-0 !border-t !border-gray-200 pt-5 px-0 rounded-none"
         />
-      </div>
+      </div> */}
     </aside>
   );
 };

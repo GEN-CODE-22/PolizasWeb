@@ -1,0 +1,1 @@
+export { PolizasContent } from "./PolizasContent";

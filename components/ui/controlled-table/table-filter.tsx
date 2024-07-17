@@ -53,7 +53,7 @@ export const FilterDrawerView = ({
           onClick={() => setOpenDrawer(false)}
           className="mt-5 h-11 w-full text-sm"
         >
-          Show Results
+          Mostrar Resultados
         </Button>
       </div>
     </Drawer>

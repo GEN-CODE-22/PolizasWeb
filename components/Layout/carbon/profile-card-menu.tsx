@@ -2,10 +2,8 @@ import { Avatar, Button, Popover, Title, Text } from "rizzui";
 import cn from "@/utils/class-names";
 import { FC, ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-
-import Link from "next/link";
 import { Placement } from "@floating-ui/react";
-import { routes } from "@/components/config/routes";
+import { signOut } from "next-auth/react";
 
 type ProfileCardMenuProps = {
   className?: string;
@@ -18,21 +16,6 @@ type ProfileCardMenuProps = {
   initial?: string;
   image?: string;
 };
-
-const menuItems = [
-  {
-    name: "My Profile",
-    href: routes.profile,
-  },
-  {
-    name: "Account Settings",
-    href: routes.forms.profileSettings,
-  },
-  {
-    name: "Activity Log",
-    href: "#",
-  },
-];
 
 const DropdownMenu: FC<ProfileCardMenuProps> = ({
   image,
@@ -49,24 +32,21 @@ const DropdownMenu: FC<ProfileCardMenuProps> = ({
           initials={initial && initial}
         />
         <div className="ms-3">
-          {title && (
+          {/* {title && (
             <Title as="h6" className="font-semibold">
               {title}
             </Title>
           )}
-          {designation && <Text className="text-gray-600">{designation}</Text>}
-        </div>
-      </div>
-      <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
-        {menuItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="group my-0.5 flex items-center rounded-md px-2.5 py-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-50/50"
+          {designation && <Text className="text-gray-600">{designation}</Text>} */}
+
+          <Button
+            className="h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
+            variant="text"
+            onClick={() => signOut()}
           >
-            {item.name}
-          </Link>
-        ))}
+            Cerrar Sesión
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -121,7 +101,7 @@ export const ProfileCardMenu: FC<ProfileCardMenuProps> = ({
                   {title && (
                     <Title
                       as="h6"
-                      className="text-sm font-semibold text-gray-900"
+                      className="text-sm font-semibold text-gray-900 uppercase"
                     >
                       {title}
                     </Title>

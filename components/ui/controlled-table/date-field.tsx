@@ -9,9 +9,7 @@ export default function DateFiled({
   return (
     <div>
       <DatePicker
-        monthsShown={1}
         placeholderText={placeholderText}
-        selectsRange
         inputProps={{
           inputClassName: "h-9 [&_input]:text-ellipsis",
           ...inputProps,

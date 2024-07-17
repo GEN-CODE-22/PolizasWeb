@@ -5,3 +5,10 @@ export const convertMoney = (value: number) => {
     minimumFractionDigits: 2,
   }).format(value);
 };
+
+export function getDateRangeStateValues(state: string | null) {
+  if (!state) {
+    return null;
+  }
+  return new Date(state);
+}

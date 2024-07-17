@@ -1,4 +1,8 @@
-import { CatalogosState, GetCuentasContable } from "@/redux/slices/catalogos";
+import {
+  CatalogosState,
+  deleteCuentaC,
+  GetCuentasContable,
+} from "@/redux/slices/catalogos";
 import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,10 +12,12 @@ import { useTable } from "../use-table";
 import { HeaderCell } from "@/components/ui/TableV2";
 import { ActionIcon, Text, Tooltip } from "rizzui";
 import { CuentasContable, UnidadOp } from "@/interfaces";
-import { PiNotePencil } from "react-icons/pi";
+import { PiNotePencil, PiTrashDuotone } from "react-icons/pi";
 import { DrawerHeader } from "@/components/settings/drawer-header";
 import { FormCuentaC } from "@/components/content/catalogos/CuentasContable/FormCuentaC";
 import { useDrawer } from "@/components/Shared/drawer-views/use-drawer";
+import { RemoveCuentaC } from "@/helpers/catalogos";
+import toast from "react-hot-toast";
 
 const filterState = {
   id: 0,
@@ -54,6 +60,17 @@ export const useCuentasContable = () => {
       placement: "right",
       customSize: "420px",
     });
+  };
+
+  const deleteCuenta = async (cuenta: CuentasContable) => {
+    toast.loading("Eliminando Cuenta 🕔");
+    const remove = await RemoveCuentaC(cuenta);
+
+    if (!!remove) dispatch(deleteCuentaC(remove));
+
+    toast.dismiss();
+
+    toast.success("Cuenta Eliminada 🗑️");
   };
 
   const onDeleteItem = useCallback(async (id: string) => {
@@ -152,6 +169,20 @@ export const useCuentasContable = () => {
             >
               <ActionIcon size="sm" variant="outline" onClick={() => edit(row)}>
                 <PiNotePencil className="h-4 w-4" />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              size="sm"
+              content={"Eliminar Cuenta"}
+              placement="top"
+              color="invert"
+            >
+              <ActionIcon
+                size="sm"
+                variant="outline"
+                onClick={() => deleteCuenta(row)}
+              >
+                <PiTrashDuotone className="h-4 w-4" />
               </ActionIcon>
             </Tooltip>
           </div>

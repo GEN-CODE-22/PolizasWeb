@@ -19,6 +19,8 @@ export const SignInForm = () => {
     (s) => s.catalogos
   );
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [serverCheck, setServerCheck] = useState<string>();
 
   const [options, setOptions] = useState<SelectOption[]>([]);
@@ -40,7 +42,9 @@ export const SignInForm = () => {
   const { errors } = formState;
 
   const onSubmit: SubmitHandler<AuthInput> = async (values) => {
+    setLoading(true);
     await signIn("credentials", { ...values, server: serverCheck });
+    setLoading(false);
   };
 
   const onChange = (value: SelectOption) => {
@@ -90,6 +94,7 @@ export const SignInForm = () => {
             className="w-full"
             type="submit"
             size={isMedium ? "lg" : "xl"}
+            isLoading={loading}
           >
             Sign In
           </Button>

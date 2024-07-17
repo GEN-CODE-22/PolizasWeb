@@ -1,10 +1,9 @@
 import { Title } from "rizzui";
-
-import { ForwardedRef } from "react";
 import cn from "@/utils/class-names";
+import { ForwardedRef, forwardRef } from "react";
 
 const widgetCardClasses = {
-  base: "border border-muted bg-gray-0 p-5 dark:bg-gray-50 lg:p-7 rounded-lg",
+  base: "border border-muted bg-gray-0 p-5 dark:bg-gray-50 lg:p-7",
   rounded: {
     sm: "rounded-sm",
     DEFAULT: "rounded-lg",
@@ -25,7 +24,7 @@ type WidgetCardTypes = {
   className?: string;
 };
 
-export const WidgetCard = (
+function WidgetCard(
   {
     title,
     action,
@@ -39,14 +38,22 @@ export const WidgetCard = (
     children,
   }: React.PropsWithChildren<WidgetCardTypes>,
   ref: ForwardedRef<HTMLDivElement>
-) => {
+) {
   return (
     <div
-      className={
-        "border border-muted bg-gray-0 p-5 dark:bg-gray-50 lg:p-7 rounded-lg"
-      }
+      className={cn(
+        widgetCardClasses.base,
+        widgetCardClasses.rounded[rounded],
+        className
+      )}
+      ref={ref}
     >
-      <div className={cn(!!action && "flex items-start justify-between")}>
+      <div
+        className={cn(
+          action && "flex items-start justify-between",
+          headerClassName
+        )}
+      >
         <div>
           <Title
             as="h3"
@@ -63,4 +70,7 @@ export const WidgetCard = (
       {children}
     </div>
   );
-};
+}
+
+export default forwardRef(WidgetCard);
+WidgetCard.displayName = "WidgetCard";

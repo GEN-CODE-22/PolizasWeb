@@ -5,6 +5,7 @@ import SimpleBar from "simplebar-react";
 import cn from "@/utils/class-names";
 import { WorkSpaceSwitcher } from "./work-space-switcher";
 import { Logo } from "@/components/logo";
+import { CarbonSidebarMenu } from "./carbon-sidebar-menu";
 
 export function CarbonDrawerSidebar({ className }: { className?: string }) {
   return (
@@ -25,7 +26,7 @@ export function CarbonDrawerSidebar({ className }: { className?: string }) {
       </div>
 
       <SimpleBar className="h-[calc(100%-144px)]">
-        <SidebarMenu />
+        <CarbonSidebarMenu />
       </SimpleBar>
 
       <div className="relative bg-gray-0 px-6 pb-3 pt-1 dark:bg-gray-100">

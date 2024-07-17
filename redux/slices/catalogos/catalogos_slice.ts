@@ -75,7 +75,15 @@ export const CatalogosSlice = createSlice({
       state.cuentasContable = [...state.cuentasContable, action.payload];
     },
     addUnidadOp: (state, action: PayloadAction<UnidadOp>) => {
-      state.unidadesOp = [...state.unidadesOp, action.payload];
+      state.unidadesOp = [
+        ...state.unidadesOp.filter((u) => u.id !== action.payload.id),
+        action.payload,
+      ];
+    },
+    deleteCuentaC: (state, action: PayloadAction<CuentasContable>) => {
+      state.cuentasContable = [
+        ...state.cuentasContable.filter((c) => c.id !== action.payload.id),
+      ];
     },
   },
 });
@@ -92,4 +100,5 @@ export const {
   addCuentasC,
   addUnidadOp,
   setServidores,
+  deleteCuentaC,
 } = CatalogosSlice.actions;
