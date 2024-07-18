@@ -28,7 +28,7 @@ const Poliza: FC<Props> = ({ pageProps: { poliza } }) => {
   return (
     <DefaultLayout>
       <PageHeader title={"Entradas Contable"} breadcrumb={[]} />
-
+      <CardPoliza />
       <DetallePoliza />
     </DefaultLayout>
   );

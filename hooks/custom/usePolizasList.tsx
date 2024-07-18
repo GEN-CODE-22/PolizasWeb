@@ -108,18 +108,17 @@ export const usePolizasList = (tipo: string) => {
   };
 
   useEffect(() => {
-    if (tipo) {
-      setTipo();
-    }
-
     const handler = setTimeout(() => {
-      GetData();
+      if (tipo && tipo !== tipoP) {
+        setTipo();
+        GetData();
+      }
     }, 4000); // Ajusta el tiempo de debounce según sea necesario
 
     return () => {
       clearTimeout(handler);
     };
-  }, [FechaFin, FechaInicio, tipo]);
+  }, [FechaFin, FechaInicio, tipoP]);
 
   const GetData = () => dispatch(GetPolizas());
 
