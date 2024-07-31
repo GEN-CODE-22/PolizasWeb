@@ -8,12 +8,11 @@ import { useTable } from "../use-table";
 import { HeaderCell } from "@/components/ui/TableV2";
 import { ActionIcon, Checkbox, Text, Tooltip } from "rizzui";
 import { UnidadOp } from "@/interfaces";
-import { DateCell } from "@/components/ui/date-cell";
-import { convertMoney } from "@/utils/tools";
 import { PiNotePencil } from "react-icons/pi";
 import { useDrawer } from "@/components/Shared/drawer-views/use-drawer";
 import { DrawerHeader } from "@/components/settings/drawer-header";
 import { FormUnidadO } from "@/components/content/catalogos/UnidadesOperativa/FormUnidadO";
+import { AppState } from "@/redux/slices/app";
 
 const filterState = {
   id: 0,
@@ -23,7 +22,7 @@ const filterState = {
 
 export const useUnidades = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
+
   const [pageSize, setPageSize] = useState(10);
 
   const { openDrawer, closeDrawer } = useDrawer();
@@ -32,9 +31,11 @@ export const useUnidades = () => {
     (s) => s.catalogos
   );
 
+  const { server } = useSelector<StoreApp, AppState>((s) => s.app);
+
   useEffect(() => {
     GetData();
-  }, []);
+  }, [server]);
 
   const GetData = () => dispatch(GetUnidadesOp());
 

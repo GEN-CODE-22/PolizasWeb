@@ -1,8 +1,4 @@
-import {
-  CatalogosState,
-  GetCajaCuentas,
-  GetUnidadesOp,
-} from "@/redux/slices/catalogos";
+import { CatalogosState, GetCajaCuentas } from "@/redux/slices/catalogos";
 import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,14 +6,13 @@ import { useColumn } from "../use-column";
 import { useRouter } from "next/router";
 import { useTable } from "../use-table";
 import { HeaderCell } from "@/components/ui/TableV2";
-import { ActionIcon, Checkbox, Text, Tooltip } from "rizzui";
-import { CajaCuentas, UnidadOp } from "@/interfaces";
-import { DateCell } from "@/components/ui/date-cell";
-import { convertMoney } from "@/utils/tools";
+import { ActionIcon, Text, Tooltip } from "rizzui";
+import { CajaCuentas } from "@/interfaces";
 import { PiNotePencil } from "react-icons/pi";
 import { useDrawer } from "@/components/Shared/drawer-views/use-drawer";
 import { DrawerHeader } from "@/components/settings/drawer-header";
 import { FormCajaCuenta } from "@/components/content/catalogos/CajaCuentas/FormCajaCuenta";
+import { AppState } from "@/redux/slices/app";
 
 const filterState = {
   id: 0,
@@ -35,10 +30,11 @@ export const useBancosPlanta = () => {
   const { cajaCuentas, loading } = useSelector<StoreApp, CatalogosState>(
     (s) => s.catalogos
   );
+  const { server } = useSelector<StoreApp, AppState>((s) => s.app);
 
   useEffect(() => {
     GetData();
-  }, []);
+  }, [server]);
 
   const GetData = () => dispatch(GetCajaCuentas());
 

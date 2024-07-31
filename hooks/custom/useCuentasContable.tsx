@@ -18,6 +18,7 @@ import { FormCuentaC } from "@/components/content/catalogos/CuentasContable/Form
 import { useDrawer } from "@/components/Shared/drawer-views/use-drawer";
 import { RemoveCuentaC } from "@/helpers/catalogos";
 import toast from "react-hot-toast";
+import { AppState } from "@/redux/slices/app";
 
 const filterState = {
   id: 0,
@@ -37,9 +38,11 @@ export const useCuentasContable = () => {
     (s) => s.catalogos
   );
 
+  const { server } = useSelector<StoreApp, AppState>((s) => s.app);
+
   useEffect(() => {
     GetData();
-  }, []);
+  }, [server]);
 
   const GetData = () => dispatch(GetCuentasContable());
 

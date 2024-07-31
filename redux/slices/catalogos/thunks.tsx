@@ -23,6 +23,8 @@ import toast from "react-hot-toast";
 
 export const GetCuentasContable = () => {
   return async (dispatch: AppDispatch) => {
+    dispatch(setCuentasContable([]));
+
     dispatch(setLoading(true));
     const cuentasContable = await getCuentasContable();
     dispatch(setLoading(false));
@@ -32,8 +34,11 @@ export const GetCuentasContable = () => {
 };
 export const GetUnidadesOp = () => {
   return async (dispatch: AppDispatch) => {
+    dispatch(setUnidadesOp([]));
     dispatch(setLoading(true));
+
     const unidadesO = await getUnidadesOperativa();
+
     dispatch(setLoading(false));
 
     dispatch(setUnidadesOp(unidadesO));
@@ -41,6 +46,8 @@ export const GetUnidadesOp = () => {
 };
 export const GetCajaCuentas = () => {
   return async (dispatch: AppDispatch) => {
+    dispatch(setCajaCuentas([]));
+
     dispatch(setLoading(true));
     const caja = await getCajaCuentas();
     dispatch(setLoading(false));
@@ -90,6 +97,7 @@ export const UpdateCajaCuentas = (caja: CajaCuentas) => {
     }
   };
 };
+
 export const UpdateCuentaC = (cuentaC: CuentasContable) => {
   return async (dispatch: AppDispatch, _: () => StoreApp) => {
     toast.loading("Guardando Cambios 💾");
