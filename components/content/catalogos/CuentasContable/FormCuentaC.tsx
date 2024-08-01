@@ -19,6 +19,7 @@ export const FormCuentaC: FC<Props> = ({ cuentaC }) => {
   const methods = useForm<CuentaCInput>({
     resolver: zodResolver(cuentasCSchema),
     defaultValues: defaultValues(cuentaC),
+    mode: "onTouched",
   });
 
   const onSubmit: SubmitHandler<CuentaCInput> = (values) => {
@@ -32,8 +33,8 @@ export const FormCuentaC: FC<Props> = ({ cuentaC }) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="p-3 space-y-3">
         <Input
-          label="No Cuenta"
-          placeholder="Numero de cuenta"
+          label="Cuenta Contable"
+          placeholder="Cuenta Contable"
           {...register("cuenta")}
           error={errors.cuenta?.message as string}
           type="text"

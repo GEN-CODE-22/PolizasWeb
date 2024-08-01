@@ -28,6 +28,7 @@ export const UnidadesOperativaContent = () => {
     handleDelete,
     loading,
   } = useUnidades();
+
   return (
     <ControlledTable
       variant="modern"

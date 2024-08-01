@@ -34,35 +34,35 @@ export const GetCuentasContable = () => {
 };
 export const GetUnidadesOp = () => {
   return async (dispatch: AppDispatch) => {
-    dispatch(setUnidadesOp([]));
     dispatch(setLoading(true));
+    dispatch(setUnidadesOp([]));
 
     const unidadesO = await getUnidadesOperativa();
 
-    dispatch(setLoading(false));
-
     dispatch(setUnidadesOp(unidadesO));
+    dispatch(setLoading(false));
   };
 };
 export const GetCajaCuentas = () => {
   return async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
     dispatch(setCajaCuentas([]));
 
-    dispatch(setLoading(true));
     const caja = await getCajaCuentas();
-    dispatch(setLoading(false));
 
     dispatch(setCajaCuentas(caja));
+    dispatch(setLoading(false));
   };
 };
 
 export const GetServidores = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
+
     const svrs = await getServidores();
-    dispatch(setLoading(false));
 
     dispatch(setServidores(svrs));
+    dispatch(setLoading(false));
   };
 };
 
