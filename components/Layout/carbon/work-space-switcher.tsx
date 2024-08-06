@@ -40,6 +40,14 @@ export const WorkSpaceSwitcher: FC<Props> = ({
     );
   }, [servidores]);
 
+  useEffect(() => {
+    const server = window?.sessionStorage?.getItem("server");
+
+    if (!!server) {
+      dispatch(setServer(server));
+    }
+  }, []);
+
   const onChange = (value: SelectOption) => {
     dispatch(setServer(value.value.toString()));
     window?.sessionStorage?.setItem("server", value.value.toString());
