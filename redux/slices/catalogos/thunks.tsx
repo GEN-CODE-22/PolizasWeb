@@ -6,54 +6,31 @@ import {
   getServidores,
   getUnidadesOperativa,
 } from "@/helpers/catalogos";
-import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
+import { AppDispatch, StoreApp, createAsyncThunk } from "@reduxjs/toolkit";
 import { CajaCuentas, CuentasContable } from "../../../interfaces/Catalogos";
 import {
   addCaja,
   addCuentasC,
-  setCajaCuentas,
-  setCuentasContable,
   setLoading,
   setServidores,
-  setUnidadesOp,
   setUpdateCaja,
   setUpdateCuentasContable,
 } from "./catalogos_slice";
 import toast from "react-hot-toast";
 
-export const GetCuentasContable = () => {
-  return async (dispatch: AppDispatch) => {
-    dispatch(setCuentasContable([]));
+export const GetCuentas = createAsyncThunk("GetCuentas", async () => {
+  const cuentasContable = await getCuentasContable();
+  return cuentasContable;
+});
 
-    dispatch(setLoading(true));
-    const cuentasContable = await getCuentasContable();
-    dispatch(setLoading(false));
-
-    dispatch(setCuentasContable(cuentasContable));
-  };
-};
-export const GetUnidadesOp = () => {
-  return async (dispatch: AppDispatch) => {
-    dispatch(setLoading(true));
-    dispatch(setUnidadesOp([]));
-
-    const unidadesO = await getUnidadesOperativa();
-
-    dispatch(setUnidadesOp(unidadesO));
-    dispatch(setLoading(false));
-  };
-};
-export const GetCajaCuentas = () => {
-  return async (dispatch: AppDispatch) => {
-    dispatch(setLoading(true));
-    dispatch(setCajaCuentas([]));
-
-    const caja = await getCajaCuentas();
-
-    dispatch(setCajaCuentas(caja));
-    dispatch(setLoading(false));
-  };
-};
+export const GetUnidades = createAsyncThunk("GetGetUnidadesOp", async () => {
+  const unidadesO = await getUnidadesOperativa();
+  return unidadesO;
+});
+export const GetCaja = createAsyncThunk("GetCajaCuentas", async () => {
+  const caja = await getCajaCuentas();
+  return caja;
+});
 
 export const GetServidores = () => {
   return async (dispatch: AppDispatch) => {

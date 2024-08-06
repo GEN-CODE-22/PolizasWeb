@@ -1,9 +1,8 @@
-import { CatalogosState, GetUnidadesOp } from "@/redux/slices/catalogos";
-import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { CatalogosState } from "@/redux/slices/catalogos";
+import { StoreApp } from "@reduxjs/toolkit";
+import { useCallback, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import { useColumn } from "../use-column";
-import { useRouter } from "next/router";
 import { useTable } from "../use-table";
 import { HeaderCell } from "@/components/ui/TableV2";
 import { ActionIcon, Checkbox, Text, Tooltip } from "rizzui";
@@ -12,7 +11,6 @@ import { PiNotePencil } from "react-icons/pi";
 import { useDrawer } from "@/components/Shared/drawer-views/use-drawer";
 import { DrawerHeader } from "@/components/settings/drawer-header";
 import { FormUnidadO } from "@/components/content/catalogos/UnidadesOperativa/FormUnidadO";
-import { AppState } from "@/redux/slices/app";
 
 const filterState = {
   id: 0,
@@ -21,8 +19,6 @@ const filterState = {
 };
 
 export const useUnidades = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
   const [pageSize, setPageSize] = useState(10);
 
   const { openDrawer, closeDrawer } = useDrawer();
@@ -30,14 +26,6 @@ export const useUnidades = () => {
   const { unidadesOp, loading } = useSelector<StoreApp, CatalogosState>(
     (s) => s.catalogos
   );
-
-  const { server } = useSelector<StoreApp, AppState>((s) => s.app);
-
-  useEffect(() => {
-    GetData();
-  }, [server]);
-
-  const GetData = () => dispatch(GetUnidadesOp());
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {

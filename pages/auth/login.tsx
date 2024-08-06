@@ -28,8 +28,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const session = await getServerSession(req, res, authOptions);
 
-  console.log({ session });
-
   const { p = "/" } = query;
 
   if (!!session) {

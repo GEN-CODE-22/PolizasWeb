@@ -1,5 +1,6 @@
 import { CajaCuentas, CuentasContable, UnidadOp } from "@/interfaces";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { GetCaja, GetCuentas, GetUnidades } from "./thunks";
 
 export interface CatalogosState {
   cuentasContable: CuentasContable[];
@@ -7,6 +8,7 @@ export interface CatalogosState {
   cajaCuentas: CajaCuentas[];
   servidores: string[];
   loading: boolean;
+  error?: string;
 }
 
 const initialState: CatalogosState = {
@@ -15,6 +17,7 @@ const initialState: CatalogosState = {
   cajaCuentas: [],
   loading: false,
   servidores: [],
+  error: "",
 };
 
 export const CatalogosSlice = createSlice({
@@ -85,6 +88,27 @@ export const CatalogosSlice = createSlice({
         ...state.cuentasContable.filter((c) => c.id !== action.payload.id),
       ];
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(GetCuentas.fulfilled, (state, action) => {
+        state.cuentasContable = action.payload;
+      })
+      .addCase(GetCuentas.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(GetUnidades.fulfilled, (state, action) => {
+        state.unidadesOp = action.payload;
+      })
+      .addCase(GetUnidades.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(GetCaja.fulfilled, (state, action) => {
+        state.cajaCuentas = action.payload;
+      })
+      .addCase(GetCaja.rejected, (state, action) => {
+        state.error = action.error.message;
+      });
   },
 });
 

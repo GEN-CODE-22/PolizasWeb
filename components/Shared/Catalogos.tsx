@@ -1,9 +1,10 @@
 import { AppState, setServer } from "@/redux/slices/app";
 import {
-  GetCajaCuentas,
-  GetCuentasContable,
+  GetCaja,
+  GetCuentas,
   GetServidores,
-  GetUnidadesOp,
+  GetUnidades,
+  setLoading,
 } from "@/redux/slices/catalogos";
 import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
 import { useEffect } from "react";
@@ -15,6 +16,7 @@ const Catalogos = ({ children }: any) => {
   const { server } = useSelector<StoreApp, AppState>((s) => s.app);
 
   useEffect(() => {
+    if (!!server) return;
     dispatch(GetServidores());
 
     const serverSelect = window?.sessionStorage?.getItem("server");
@@ -22,15 +24,22 @@ const Catalogos = ({ children }: any) => {
     if (!!serverSelect) {
       dispatch(setServer(serverSelect));
     }
-  }, []);
+  }, [server]);
 
   useEffect(() => {
-    if (server) {
-      dispatch(GetCajaCuentas());
-      dispatch(GetCuentasContable());
-      dispatch(GetUnidadesOp());
-    }
+    if (server) GetCatalogo();
   }, [server]);
+
+  const GetCatalogo = async () => {
+    dispatch(setLoading(true));
+    const results = await Promise.all([
+      dispatch(GetCuentas()).unwrap(),
+      dispatch(GetUnidades()).unwrap(),
+      dispatch(GetCaja()).unwrap(),
+    ]);
+    console.log({ results });
+    dispatch(setLoading(false));
+  };
 
   return children;
 };

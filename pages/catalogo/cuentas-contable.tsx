@@ -1,3 +1,5 @@
+"use client";
+
 import DefaultLayout from "@/components/Layout/LayoutProvider";
 import { CuentasContableContent } from "@/components/content/catalogos/CuentasContable/CuentasContableContent";
 import PageHeader from "@/components/ui/page-header";

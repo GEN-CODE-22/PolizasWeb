@@ -1,3 +1,5 @@
+"use client";
+
 import DefaultLayout from "@/components/Layout/LayoutProvider";
 import { CajaCuentasContent } from "@/components/content/catalogos/CajaCuentas/CajaCuentasContent";
 import { GetServerSideProps } from "next";
