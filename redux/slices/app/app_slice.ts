@@ -16,7 +16,7 @@ export const AppSlice = createSlice({
     },
     setUser: (
       state,
-      action: PayloadAction<{ user: string; server: string }>
+      action: PayloadAction<{ user: string; server?: string }>
     ) => {
       state.user = action.payload.user;
       state.server = action.payload.server;

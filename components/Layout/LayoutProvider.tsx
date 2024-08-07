@@ -14,15 +14,3 @@ export default function DefaultLayout({ children }: LayoutProps) {
     </AuthWrapper>
   );
 }
-
-// function LayoutProvider({ children }: LayoutProps) {
-//   const isMounted = useIsMounted();
-
-//   if (!isMounted) {
-//     return null;
-//   }
-
-//   return (
-
-//   );
-// }

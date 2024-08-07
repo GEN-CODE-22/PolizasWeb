@@ -1,10 +1,9 @@
-import { setUser } from "@/redux/slices/app";
-import { GetServidores } from "@/redux/slices/catalogos";
-import { AppDispatch } from "@reduxjs/toolkit";
+import { AppState, setUser } from "@/redux/slices/app";
+import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "rizzui";
 
 interface Props {
@@ -16,13 +15,14 @@ export default function Auth({ children }: Props) {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
+  const app = useSelector<StoreApp, AppState>((s) => s.app);
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/auth/login");
     } else if (status === "authenticated") {
-      console.log(session);
-      let { user, server } = (session as any).user;
-      dispatch(setUser({ user, server }));
+      let { user } = (session as any).user;
+      dispatch(setUser({ user }));
     }
   }, [status]);
 

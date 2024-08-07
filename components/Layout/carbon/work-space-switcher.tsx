@@ -25,6 +25,11 @@ export const WorkSpaceSwitcher: FC<Props> = ({
     (s) => s.catalogos
   );
 
+  const [values, setValues] = useState<SelectOption>({
+    label: server ?? "",
+    value: server ?? "",
+  });
+
   const dispatch = useDispatch<AppDispatch>();
 
   const [options, setOptions] = useState<SelectOption[]>([]);
@@ -40,23 +45,16 @@ export const WorkSpaceSwitcher: FC<Props> = ({
     );
   }, [servidores]);
 
-  useEffect(() => {
-    const server = window?.sessionStorage?.getItem("server");
-
-    if (!!server) {
-      dispatch(setServer(server));
-    }
-  }, []);
-
   const onChange = (value: SelectOption) => {
-    dispatch(setServer(value.value.toString()));
     window?.sessionStorage?.setItem("server", value.value.toString());
+    dispatch(setServer(value.value.toString()));
+    setValues(value);
   };
 
   return (
     <Select
       options={options}
-      value={options.find((e) => e.value === server) ?? ""}
+      value={values}
       onChange={onChange}
       displayValue={(value: SelectOption) => renderDisplayValue(value)}
       getOptionDisplayValue={(option) => renderOptionDisplayValue(option)}
@@ -64,6 +62,7 @@ export const WorkSpaceSwitcher: FC<Props> = ({
         "h-16 outline-0 border-2 ring-0 border-gray-100 hover:!border-gray-100 hover:!ring-0 focus:border-gray-100 focus:!ring-0",
         selectClassName
       )}
+      // disabled
       className={cn(className)}
       dropdownClassName={cn("z-[9999] max-w-[250px]", dropdownClassName)}
       suffixClassName={suffixClassName}
