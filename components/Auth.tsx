@@ -1,21 +1,15 @@
-import { AppState, setUser } from "@/redux/slices/app";
-import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
+import { setUser } from "@/redux/slices/app";
+import { AppDispatch } from "@reduxjs/toolkit";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Loader } from "rizzui";
 
-interface Props {
-  [key: string]: any;
-}
-
-export default function Auth({ children }: Props) {
+export default function Auth() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-
-  const app = useSelector<StoreApp, AppState>((s) => s.app);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -35,6 +29,4 @@ export default function Auth({ children }: Props) {
       </div>
     );
   }
-
-  return <>{children}</>;
 }

@@ -2,11 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Title } from "rizzui";
 import cn from "@/utils/class-names";
-import { useEffect } from "react";
-import { GetServidores } from "@/redux/slices/catalogos";
-import { setServer } from "@/redux/slices/app";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@reduxjs/toolkit";
 
 export default function AuthWrapperFour({
   children,
@@ -19,18 +14,6 @@ export default function AuthWrapperFour({
   isSignIn?: boolean;
   className?: string;
 }) {
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(GetServidores());
-
-    const serverSelect = window?.sessionStorage?.getItem("server");
-
-    if (!!serverSelect) {
-      dispatch(setServer(serverSelect));
-    }
-  }, []);
-
   return (
     <div className="flex min-h-screen w-full flex-col justify-between bg-[url('/hero_bg.png')] bg-cover">
       {/* <AuthHeader /> */}

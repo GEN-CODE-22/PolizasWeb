@@ -25,10 +25,7 @@ export const WorkSpaceSwitcher: FC<Props> = ({
     (s) => s.catalogos
   );
 
-  const [values, setValues] = useState<SelectOption>({
-    label: server ?? "",
-    value: server ?? "",
-  });
+  const [values, setValues] = useState<SelectOption>();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -44,6 +41,15 @@ export const WorkSpaceSwitcher: FC<Props> = ({
       })
     );
   }, [servidores]);
+
+  useEffect(() => {
+    if (!!server && !values) {
+      setValues({
+        label: server,
+        value: server,
+      });
+    }
+  }, [server]);
 
   const onChange = (value: SelectOption) => {
     window?.sessionStorage?.setItem("server", value.value.toString());

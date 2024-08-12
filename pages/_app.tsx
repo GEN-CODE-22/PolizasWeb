@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "../redux";
 import GlobalDrawer from "@/components/Shared/drawer-views/container";
-
+import AuthWrapper from "../components/Auth";
 import dynamic from "next/dynamic";
 import Catalogos from "@/components/Shared/Catalogos";
 
@@ -21,6 +21,7 @@ export default function App({ Component, ...pageProps }: AppProps) {
     <SessionProvider>
       <ThemeProvider>
         <Provider store={store}>
+          <AuthWrapper />
           <Component {...pageProps} />
           <GlobalDrawer />
           <Catalogos />

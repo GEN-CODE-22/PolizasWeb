@@ -1,3 +1,5 @@
+"use client";
+
 import { AppState, setServer } from "@/redux/slices/app";
 import {
   GetCaja,
@@ -16,18 +18,21 @@ const Catalogos = ({ children }: any) => {
   const { server } = useSelector<StoreApp, AppState>((s) => s.app);
 
   useEffect(() => {
-    if (!!server) return;
     dispatch(GetServidores());
+  }, []);
+
+  useEffect(() => {
+    if (!!server) return;
 
     const serverSelect = window?.sessionStorage?.getItem("server");
 
-    if (!!serverSelect) {
+    if (!server && !!serverSelect) {
       dispatch(setServer(serverSelect));
     }
   }, [server]);
 
   useEffect(() => {
-    if (server) GetCatalogo();
+    if (!!server) GetCatalogo();
   }, [server]);
 
   const GetCatalogo = async () => {
