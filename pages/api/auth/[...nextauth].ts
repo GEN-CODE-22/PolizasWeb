@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
           }
           let usr: any = {
             user: data.user.usr_ucve,
-            serverAuth: data.serversAuth,
+            serverAuth: data.serverAuth,
             server: (credencials as any).server,
           };
 
