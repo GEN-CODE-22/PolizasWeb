@@ -19,7 +19,7 @@ export const WorkSpaceSwitcher: FC<Props> = ({
   dropdownClassName,
   suffixClassName,
 }) => {
-  const { server } = useSelector<StoreApp, AppState>((s) => s.app);
+  const { server, serverAuth } = useSelector<StoreApp, AppState>((s) => s.app);
 
   const { servidores } = useSelector<StoreApp, CatalogosState>(
     (s) => s.catalogos
@@ -33,14 +33,14 @@ export const WorkSpaceSwitcher: FC<Props> = ({
 
   useEffect(() => {
     setOptions(
-      servidores.map((c) => {
+      serverAuth.map((c) => {
         return {
           label: c,
           value: c,
         };
       })
     );
-  }, [servidores]);
+  }, [serverAuth]);
 
   useEffect(() => {
     if (!!server && !values) {

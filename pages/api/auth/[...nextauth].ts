@@ -1,5 +1,5 @@
 import api from "@/api/axios";
-import { Account } from "@/interfaces";
+import { Account, AuthSesion } from "@/interfaces";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import toast from "react-hot-toast";
@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credencials) {
         try {
           toast.loading("Revisando credenciales");
-          const { data, status } = await api.post<Account>(
+          const { data, status } = await api.post<AuthSesion>(
             "/api/Auth/Login",
             {
               user: credencials!.user,
@@ -41,11 +41,10 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Credenciales incorrectos");
           }
           let usr: any = {
-            user: data.usr_ucve,
+            user: data.user.usr_ucve,
+            serverAuth: data.serversAuth,
             server: (credencials as any).server,
           };
-
-          console.log(usr);
 
           return {
             ...usr,

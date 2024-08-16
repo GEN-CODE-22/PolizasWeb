@@ -5,7 +5,7 @@ import { useColumn } from "../use-column";
 import { useRouter } from "next/router";
 import { useTable } from "../use-table";
 import { HeaderCell } from "@/components/ui/TableV2";
-import { ActionIcon, Badge, Text, Tooltip } from "rizzui";
+import { ActionIcon, Badge, Checkbox, Text, Tooltip } from "rizzui";
 import {
   PiCaretCircleRightBold,
   PiEyeDuotone,
@@ -15,11 +15,13 @@ import {
 import {
   GetPolizas,
   PolizasState,
+  setFiltros,
   setPoliza,
   setTipoPoliza,
 } from "@/redux/slices/polizas";
 import { Poliza } from "@/interfaces/Poliza";
 import { DateCell } from "@/components/ui/date-cell";
+import { AppState } from "@/redux/slices/app";
 
 // get status badge
 function getStatusBadge(status: string) {
@@ -103,22 +105,35 @@ export const usePolizasList = (tipo: string) => {
     PolizasState
   >((s) => s.polizas);
 
+  const { server } = useSelector<StoreApp, AppState>((s) => s.app);
+
   const setTipo = () => {
     dispatch(setTipoPoliza(tipo));
   };
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (tipo && tipo !== tipoP) {
+      if (!!FechaFin && !!FechaInicio) {
         setTipo();
         GetData();
       }
     }, 4000); // Ajusta el tiempo de debounce según sea necesario
-
     return () => {
       clearTimeout(handler);
     };
-  }, [FechaFin, FechaInicio, tipoP]);
+  }, [FechaFin, FechaInicio]);
+
+  useEffect(() => {
+    setTipo();
+  }, [tipo]);
+
+  useEffect(() => {
+    if (!!server) {
+      dispatch(setFiltros({ FechaFin: undefined, FechaInicio: undefined }));
+      setTipo();
+      GetData();
+    }
+  }, [server]);
 
   const GetData = () => dispatch(GetPolizas());
 
@@ -157,6 +172,10 @@ export const usePolizasList = (tipo: string) => {
     handleReset,
     applyFilters,
   } = useTable(polizas, pageSize, filterState);
+
+  const onChange = (row: Poliza) => {
+    console.log(row);
+  };
 
   const columns = useMemo(
     () => [
@@ -230,9 +249,33 @@ export const usePolizasList = (tipo: string) => {
         minWidth: 100,
         flex: 1,
         render: (value: any) => (
-          <DateCell date={value} dateFormat="yyyy-MM-DD hh:mm" />
+          <DateCell date={value} dateFormat="yyyy-MM-DD" />
         ),
       },
+      // {
+      //   title: (
+      //     <HeaderCell
+      //       title="Revisada"
+      //       sortable
+      //       ascending={
+      //         sortConfig?.direction === "asc" && sortConfig?.key === "check"
+      //       }
+      //     />
+      //   ),
+      //   onHeaderCell: () => onHeaderCellClick("check"),
+      //   dataIndex: "check",
+      //   key: "check",
+      //   minWidth: 100,
+      //   flex: 1,
+      //   render: (_: any, row: Poliza) => (
+      //     <Checkbox
+      //       value={row.check}
+      //       onChange={(e) =>
+      //         onChange({ ...row, check: e.target.checked ? 1 : 0 })
+      //       }
+      //     />
+      //   ),
+      // },
 
       {
         title: <HeaderCell title="Actions" />,

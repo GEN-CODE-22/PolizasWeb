@@ -1,3 +1,4 @@
+import { AuthSesion } from "@/interfaces";
 import { setUser } from "@/redux/slices/app";
 import { AppDispatch } from "@reduxjs/toolkit";
 import { useSession } from "next-auth/react";
@@ -15,8 +16,10 @@ export default function Auth() {
     if (status === "unauthenticated") {
       router.push("/auth/login");
     } else if (status === "authenticated") {
-      let { user } = (session as any).user;
-      dispatch(setUser({ user }));
+      let data = session.user as AuthSesion;
+      dispatch(
+        setUser({ user: data.user.usr_ucve, serverAuth: data.serverAuth })
+      );
     }
   }, [status]);
 

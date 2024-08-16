@@ -7,6 +7,7 @@ export interface Poliza {
   createBy: string;
   createAt: Date;
   detalles: Detalle[];
+  check: number;
 }
 
 export interface Detalle {

@@ -41,3 +41,8 @@ export interface Account {
   esResponsableCambios: boolean;
   esSupervisorRecepcion: boolean;
 }
+
+export interface AuthSesion {
+  user: Account;
+  serverAuth: string[];
+}
