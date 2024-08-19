@@ -9,7 +9,6 @@ import { ActionIcon, Badge, Checkbox, Text, Tooltip } from "rizzui";
 import {
   PiCaretCircleRightBold,
   PiEyeDuotone,
-  PiNotePencil,
   PiXCircleBold,
 } from "react-icons/pi";
 import {

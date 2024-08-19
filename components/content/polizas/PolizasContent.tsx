@@ -1,7 +1,7 @@
 import { TableFooter } from "@/components/Shared/table-footer";
 import { ControlledTable } from "@/components/ui/controlled-table";
 import { usePolizasList } from "@/hooks/custom/usePolizasList";
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import { FilterElement } from "./FilterElement";
 
 interface Props {
