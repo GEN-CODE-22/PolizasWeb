@@ -127,7 +127,7 @@ export const usePolizasList = (tipo: string) => {
   }, [tipo]);
 
   useEffect(() => {
-    if (!!server) {
+    if (!!server && tipo === tipoP) {
       dispatch(setFiltros({ FechaFin: undefined, FechaInicio: undefined }));
       setTipo();
       GetData();

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PageHeader from "@/components/ui/page-header";
 import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
 import { CardPoliza } from "@/components/content/polizas/CardPoliza";
+import { AppState } from "@/redux/slices/app";
 
 interface Props {
   pageProps: { poliza: number };
@@ -14,6 +15,8 @@ interface Props {
 
 const Poliza: FC<Props> = ({ pageProps: { poliza } }) => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const { breadcrumb } = useSelector<StoreApp, AppState>((s) => s.app);
 
   const { currentPoliza } = useSelector<StoreApp, PolizasState>(
     (s) => s.polizas
@@ -27,7 +30,7 @@ const Poliza: FC<Props> = ({ pageProps: { poliza } }) => {
 
   return (
     <DefaultLayout>
-      <PageHeader title={"Entradas Contable"} breadcrumb={[]} />
+      <PageHeader title={"Entradas Contable"} breadcrumb={breadcrumb} />
       <CardPoliza />
       <DetallePoliza />
     </DefaultLayout>

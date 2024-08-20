@@ -17,8 +17,10 @@ export default function Auth() {
       router.push("/auth/login");
     } else if (status === "authenticated") {
       let data = session.user as AuthSesion;
+
+      console.log(data);
       dispatch(
-        setUser({ user: data.user.usr_ucve, serverAuth: data.serverAuth })
+        setUser({ user: data.user.usr_ucve, serverAuth: data.serversAuth })
       );
     }
   }, [status]);

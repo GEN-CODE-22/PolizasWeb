@@ -1,5 +1,4 @@
 import CarbonLayout from "./carbon/carbon-layout";
-import AuthWrapper from "../../components/Auth";
 
 type LayoutProps = {
   children: React.ReactNode;

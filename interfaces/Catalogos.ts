@@ -44,5 +44,10 @@ export interface Account {
 
 export interface AuthSesion {
   user: Account;
-  serverAuth: string[];
+  serversAuth: string[];
+}
+
+export interface Breadcrumb {
+  href: string;
+  name: string;
 }
