@@ -42,6 +42,7 @@
     "clsx": "^2.1.0",
     "date-arithmetic": "^4.1.0",
     "dayjs": "^1.11.10",
+    "file-saver": "^2.0.5",
     "framer-motion": "^11.0.25",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.12",
@@ -91,6 +92,7 @@
     "tailwind-merge": "^2.2.2",
     "typescript": "5.4.2",
     "uploadthing": "^6.7.0",
+    "xlsx": "^0.18.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -99,6 +101,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/date-arithmetic": "^4.1.4",
+    "@types/file-saver": "^2.0.7",
     "@types/google.maps": "^3.55.7",
     "@types/lodash": "^4.17.0",
     "@types/node": "20.11.27",

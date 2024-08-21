@@ -5,6 +5,7 @@ import { TablePagination, TablePaginationProps } from "./table-pagination";
 import Table, { TableProps } from "../TableV2";
 import cn from "@/utils/class-names";
 import { FC } from "react";
+import { DefaultRecordType, PanelRender } from "rc-table/lib/interface";
 
 type ControlledTableProps = {
   isLoading?: boolean;
@@ -15,6 +16,7 @@ type ControlledTableProps = {
   tableFooter?: React.ReactNode;
   className?: string;
   paginatorClassName?: string;
+  footer?: PanelRender<DefaultRecordType> | undefined;
 } & TableProps;
 
 export const ControlledTable: FC<ControlledTableProps> = ({
@@ -26,6 +28,7 @@ export const ControlledTable: FC<ControlledTableProps> = ({
   showLoadingText,
   paginatorClassName,
   className,
+
   ...tableProps
 }) => {
   if (isLoading) {
@@ -49,10 +52,21 @@ export const ControlledTable: FC<ControlledTableProps> = ({
 
       <div className="relative">
         <Table
-          scroll={{ x: 1300 }}
+          scroll={{ x: 2000 }}
           rowKey={(record) => record.id}
           className={cn(className)}
           {...tableProps}
+          // footer={() => (
+          //   <div
+          //     style={{
+          //       textAlign: "right",
+          //       padding: "10px",
+          //       fontWeight: "bold",
+          //     }}
+          //   >
+          //     Total Cantidad: {10}
+          //   </div>
+          // )}
         />
 
         {tableFooter ? tableFooter : null}

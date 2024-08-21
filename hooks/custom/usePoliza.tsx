@@ -21,7 +21,7 @@ const filterState = {
 export const usePoliza = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(40);
 
   const { currentPoliza, loading } = useSelector<StoreApp, PolizasState>(
     (s) => s.polizas
@@ -243,7 +243,7 @@ export const usePoliza = () => {
     useColumn(columns);
 
   return {
-    data: currentPoliza?.detalles ?? [],
+    data: currentPoliza?.detalles,
     visibleColumns,
     checkedColumns,
     setCheckedColumns,

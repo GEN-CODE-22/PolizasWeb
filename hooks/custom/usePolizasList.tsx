@@ -9,6 +9,7 @@ import { ActionIcon, Badge, Checkbox, Text, Tooltip } from "rizzui";
 import {
   PiCaretCircleRightBold,
   PiEyeDuotone,
+  PiFileXls,
   PiXCircleBold,
 } from "react-icons/pi";
 import {
@@ -21,6 +22,8 @@ import {
 import { Poliza } from "@/interfaces/Poliza";
 import { DateCell } from "@/components/ui/date-cell";
 import { AppState } from "@/redux/slices/app";
+import { exportToExcel } from "@/helpers/excel";
+import moment from "moment";
 
 // get status badge
 function getStatusBadge(status: string) {
@@ -94,6 +97,21 @@ const filterState = {
   cve_unidad: "",
 };
 
+interface Detalle {
+  id: number;
+  poliza: string;
+  origen: string;
+  cuenta: string;
+  unidad: string;
+  journal_id: string;
+  departamento: string;
+  referencia: string;
+  descripcion: string;
+  importe: number;
+  createBy: string;
+  producto: string;
+  createAt: Date;
+}
 export const usePolizasList = (tipo: string) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -127,7 +145,7 @@ export const usePolizasList = (tipo: string) => {
   }, [tipo]);
 
   useEffect(() => {
-    if (!!server && tipo === tipoP) {
+    if (!!server) {
       dispatch(setFiltros({ FechaFin: undefined, FechaInicio: undefined }));
       setTipo();
       GetData();
@@ -174,6 +192,43 @@ export const usePolizasList = (tipo: string) => {
 
   const onChange = (row: Poliza) => {
     console.log(row);
+  };
+
+  const descargar = (row: Poliza) => {
+    let tipo =
+      row.tipo === "V"
+        ? "Ventas"
+        : row.tipo === "C"
+          ? "Canceladas"
+          : row.tipo === "L"
+            ? "Cobranza"
+            : "Sepa";
+
+    let datos: Detalle[] = [
+      ...row.detalles.map((d) => {
+        let de: Detalle = {
+          id: d.id,
+          poliza: tipo,
+          origen: d.origen,
+          cuenta: d.cuenta.cuenta,
+          unidad: d.unidad.cve_unidad,
+          journal_id: d.journal_id,
+          departamento: d.departamento,
+          referencia: d.referencia,
+          descripcion: d.descripcion,
+          importe: d.importe,
+          createBy: d.createBy,
+          producto: "",
+          createAt: d.createAt,
+        };
+        return de;
+      }),
+    ];
+
+    exportToExcel(
+      datos,
+      `Poliza-${tipo}-${moment(row.createAt).format("yyyy-mm-dd")}`
+    );
   };
 
   const columns = useMemo(
@@ -295,6 +350,20 @@ export const usePolizasList = (tipo: string) => {
                 onClick={() => onEdit(row)}
               >
                 <PiEyeDuotone className="h-4 w-4" />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              size="sm"
+              content={"Descargar"}
+              placement="top"
+              color="invert"
+            >
+              <ActionIcon
+                size="sm"
+                variant="outline"
+                onClick={() => descargar(row)}
+              >
+                <PiFileXls className="h-4 w-4" />
               </ActionIcon>
             </Tooltip>
             {row.estatus === "P" && (

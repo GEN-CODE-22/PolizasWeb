@@ -1,6 +1,8 @@
 import { TableFooter } from "@/components/Shared/table-footer";
 import { ControlledTable } from "@/components/ui/controlled-table";
 import { usePoliza } from "@/hooks/custom/usePoliza";
+import { convertMoney } from "@/utils/tools";
+import Table from "rc-table";
 import React, { FC } from "react";
 
 export const DetallePoliza = () => {
@@ -66,6 +68,22 @@ export const DetallePoliza = () => {
       //     handleReset={handleReset}
       //   />
       // }
+      summary={(datos) => (
+        <Table.Summary.Row>
+          {columns.map((column, index) => (
+            <Table.Summary.Cell key={column.key} index={index} align="right">
+              {column.key === "importe"
+                ? convertMoney(
+                    Math.round(
+                      data?.reduce((total, item) => total + item.importe, 0) ??
+                        0 * 100
+                    ) / 100
+                  )
+                : null}
+            </Table.Summary.Cell>
+          ))}
+        </Table.Summary.Row>
+      )}
       tableFooter={
         <TableFooter
           checkedItems={selectedRowKeys}
