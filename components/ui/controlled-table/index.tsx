@@ -52,7 +52,7 @@ export const ControlledTable: FC<ControlledTableProps> = ({
 
       <div className="relative">
         <Table
-          scroll={{ x: 2000 }}
+          scroll={{ x: 1300 }}
           rowKey={(record) => record.id}
           className={cn(className)}
           {...tableProps}
