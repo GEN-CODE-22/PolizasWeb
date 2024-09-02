@@ -12,6 +12,12 @@ import { Detalle, Poliza } from "@/interfaces/Poliza";
 import { DateCell } from "@/components/ui/date-cell";
 import { convertMoney } from "@/utils/tools";
 
+interface DataType {
+  key: number;
+  name: string;
+  date: Date;
+}
+
 const filterState = {
   id: 0,
   descripcion: "",

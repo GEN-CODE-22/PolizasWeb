@@ -24,7 +24,14 @@ import { DateCell } from "@/components/ui/date-cell";
 import { AppState } from "@/redux/slices/app";
 import { exportToExcel } from "@/helpers/excel";
 import moment from "moment";
+import { useModal } from "@/components/Shared/modal-views/use-modal";
+import { DetallePoliza } from "@/components/content/polizas/DetallePoliza";
 
+interface DataType {
+  key: number;
+  name: string;
+  date: Date;
+}
 // get status badge
 function getStatusBadge(status: string) {
   switch (status) {
@@ -123,6 +130,8 @@ export const usePolizasList = (tipo: string) => {
   >((s) => s.polizas);
 
   const { server } = useSelector<StoreApp, AppState>((s) => s.app);
+
+  const { closeModal, openModal } = useModal();
 
   const setTipo = () => {
     dispatch(setTipoPoliza(tipo));
@@ -302,6 +311,7 @@ export const usePolizasList = (tipo: string) => {
         key: "createAt",
         minWidth: 100,
         flex: 1,
+
         render: (value: any) => (
           <DateCell date={value} dateFormat="yyyy-MM-DD" />
         ),
@@ -347,7 +357,7 @@ export const usePolizasList = (tipo: string) => {
               <ActionIcon
                 size="sm"
                 variant="outline"
-                onClick={() => onEdit(row)}
+                onClick={() => handleCreateModal(row)}
               >
                 <PiEyeDuotone className="h-4 w-4" />
               </ActionIcon>
@@ -412,6 +422,16 @@ export const usePolizasList = (tipo: string) => {
       handleSelectAll,
     ] // columns will only update if data changes
   );
+
+  function handleCreateModal(row: Poliza) {
+    dispatch(setPoliza(row));
+    closeModal(),
+      openModal({
+        view: <DetallePoliza />,
+        size: "full",
+        title: "Detalle Poliza",
+      });
+  }
 
   const { visibleColumns, checkedColumns, setCheckedColumns } =
     useColumn(columns);

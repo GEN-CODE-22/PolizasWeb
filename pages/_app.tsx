@@ -8,6 +8,7 @@ import GlobalDrawer from "@/components/Shared/drawer-views/container";
 import AuthWrapper from "../components/Auth";
 import dynamic from "next/dynamic";
 import Catalogos from "@/components/Shared/Catalogos";
+import GlobalModal from "@/components/Shared/modal-views/container";
 
 const Toaster = dynamic(
   () => import("react-hot-toast").then((c) => c.Toaster),
@@ -26,6 +27,7 @@ export default function App({ Component, ...pageProps }: AppProps) {
           <GlobalDrawer />
           <Catalogos />
           <Toaster containerStyle={{ zIndex: 99999 }} />
+          <GlobalModal />
         </Provider>
       </ThemeProvider>
     </SessionProvider>

@@ -1,5 +1,6 @@
 import { Poliza } from "@/interfaces/Poliza";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import moment from "moment";
 
 export interface PolizasState {
   polizas: Poliza[];
@@ -20,7 +21,9 @@ export const PolizasSlice = createSlice({
   initialState,
   reducers: {
     setPolizas: (state, action: PayloadAction<Poliza[]>) => {
-      state.polizas = action.payload;
+      state.polizas = action.payload.sort((a, b) =>
+        moment(a.createAt).diff(moment(b.createAt))
+      );
     },
     setPoliza: (state, action: PayloadAction<Poliza | undefined>) => {
       state.currentPoliza = action.payload;
@@ -53,7 +56,9 @@ export const PolizasSlice = createSlice({
       state.tipoP = action.payload?.tipoP ?? state.tipoP;
     },
     addPolizas: (state, action: PayloadAction<Poliza[]>) => {
-      state.polizas = [...state.polizas, ...action.payload];
+      state.polizas = [...state.polizas, ...action.payload].sort((a, b) =>
+        moment(a.createAt).diff(moment(b.createAt))
+      );
     },
   },
 });
