@@ -118,7 +118,7 @@ export const FormPoliza = () => {
         </div>
 
         <Input
-          type="datetime-local"
+          type="date"
           size={isMedium ? "lg" : "xl"}
           label="Fecha de Poliza"
           placeholder="Coloca la fecha de la poliza"
