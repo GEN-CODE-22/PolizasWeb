@@ -51,3 +51,9 @@ export interface Breadcrumb {
   href: string;
   name: string;
 }
+
+export interface TDocXLS {
+  nameSheet: string;
+  dataSheet: object[];
+  nameFile: string;
+}

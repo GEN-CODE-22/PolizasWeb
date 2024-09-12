@@ -1,10 +1,18 @@
 import React, { FC, useState } from "react";
 import dynamic from "next/dynamic";
-import { PiMagnifyingGlassBold, PiFunnel, PiXBold } from "react-icons/pi";
+import {
+  PiMagnifyingGlassBold,
+  PiFunnel,
+  PiXBold,
+  PiFileCsv,
+  PiFileXls,
+} from "react-icons/pi";
 import { Button, ActionIcon, Input, Title } from "rizzui";
 import { useMedia } from "react-use";
 import cn from "@/utils/class-names";
 import { ToggleColumns } from "../TableV2";
+import { exportToExcelCustom } from "@/helpers/excel";
+import { TDocXLS } from "@/interfaces";
 
 const Drawer = dynamic(() => import("rizzui").then((module) => module.Drawer), {
   ssr: false,
@@ -74,6 +82,9 @@ export type TableFilterProps = {
   showSearchOnTheRight?: boolean;
   enableDrawerFilter?: boolean;
   menu?: React.ReactNode;
+  dataExcel?: TDocXLS[];
+  nameFileExcel?: string;
+  [key: string]: any;
 };
 
 export const TableFilter: FC<TableFilterProps> = ({
@@ -90,10 +101,18 @@ export const TableFilter: FC<TableFilterProps> = ({
   showSearchOnTheRight = false,
   menu,
   children,
+  dataExcel,
+  nameFileExcel,
+  ...props
 }) => {
   const isMediumScreen = useMedia("(max-width: 1860px)", false);
   const [showFilters, setShowFilters] = useState(true);
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  const exportCVS = () => {
+    if (dataExcel && nameFileExcel)
+      exportToExcelCustom(dataExcel, nameFileExcel);
+  };
 
   return (
     <div className="table-filter mb-4 flex items-center justify-between">
@@ -178,6 +197,25 @@ export const TableFilter: FC<TableFilterProps> = ({
           setCheckedColumns={setCheckedColumns}
           hideIndex={hideIndex}
         />
+        <Button
+          // {...(isMediumScreen || enableDrawerFilter
+          //   ? {
+          //       onClick: () => {
+          //         setOpenDrawer(() => !openDrawer);
+          //       },
+          //     }
+          //   : { onClick: () => setShowFilters(() => !showFilters) })}
+          onClick={exportCVS}
+          variant={"outline"}
+          className={cn(
+            "me-2.5 h-9 pe-3 ps-2.5",
+            !(isMediumScreen || enableDrawerFilter) &&
+              showFilters &&
+              "border-dashed border-gray-700"
+          )}
+        >
+          <PiFileXls className="h-[25px] w-[25px]" strokeWidth={1.7} />
+        </Button>
       </div>
     </div>
   );

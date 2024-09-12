@@ -1,6 +1,7 @@
 import { Poliza } from "@/interfaces/Poliza";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
+import { CheckedPoliza, PostedPoliza } from "./thunks";
 
 export interface PolizasState {
   polizas: Poliza[];
@@ -9,6 +10,7 @@ export interface PolizasState {
   FechaInicio?: Date;
   FechaFin?: Date;
   tipoP?: string;
+  error?: string;
 }
 
 const initialState: PolizasState = {
@@ -60,6 +62,36 @@ export const PolizasSlice = createSlice({
         moment(a.createAt).diff(moment(b.createAt))
       );
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(CheckedPoliza.fulfilled, (state, action) => {
+        state.polizas = [
+          ...state.polizas.map((item) =>
+            item.id === action.payload.id
+              ? { ...item, ...action.payload }
+              : item
+          ),
+        ];
+      })
+      .addCase(CheckedPoliza.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(PostedPoliza.fulfilled, (state, action) => {
+        ///Si se completo la tarea con exito poner en estatus "M" de proceso en PS
+        if (action.payload) {
+          state.polizas = [
+            ...state.polizas.map((item) =>
+              item.estatus === "T" && item?.check === 1
+                ? { ...item, estatus: "M" }
+                : item
+            ),
+          ];
+        }
+      })
+      .addCase(PostedPoliza.rejected, (state, action) => {
+        state.error = action.error.message;
+      });
   },
 });
 

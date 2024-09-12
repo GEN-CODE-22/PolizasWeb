@@ -10,11 +10,14 @@ import {
   PiCaretCircleRightBold,
   PiEyeDuotone,
   PiFileXls,
+  PiMoney,
   PiXCircleBold,
 } from "react-icons/pi";
 import {
+  CheckedPoliza,
   GetPolizas,
   PolizasState,
+  PostedPoliza,
   setFiltros,
   setPoliza,
   setTipoPoliza,
@@ -26,6 +29,9 @@ import { exportToExcel } from "@/helpers/excel";
 import moment from "moment";
 import { useModal } from "@/components/Shared/modal-views/use-modal";
 import { DetallePoliza } from "@/components/content/polizas/DetallePoliza";
+import { convertMoney } from "@/utils/tools";
+import { TDocXLS } from "@/interfaces";
+import toast from "react-hot-toast";
 
 interface DataType {
   key: number;
@@ -88,6 +94,29 @@ function getStatus(status: string) {
           <Text className="ms-2 font-medium text-green-dark">Posteada</Text>
         </div>
       );
+    case "T":
+      return (
+        <div className="flex items-center">
+          <Badge color="secondary" renderAsDot />
+          <Text className="ms-2 font-medium text-secondary">Revisada</Text>
+        </div>
+      );
+    case "M":
+      return (
+        <div className="flex items-center">
+          <Badge color="info" renderAsDot />
+          <Text className="ms-2 font-medium text-amber-500">Proceso PS</Text>
+        </div>
+      );
+    case "G":
+      return (
+        <div className="flex items-center">
+          <Badge color="success" renderAsDot />
+          <Text className="ms-2 font-medium text-green-900">
+            Generada en PS
+          </Text>
+        </div>
+      );
     default:
       return (
         <div className="flex items-center">
@@ -122,7 +151,7 @@ interface Detalle {
 export const usePolizasList = (tipo: string) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(31);
 
   const { polizas, loading, FechaFin, FechaInicio, tipoP } = useSelector<
     StoreApp,
@@ -178,6 +207,14 @@ export const usePolizasList = (tipo: string) => {
     router.push(`/poliza/edit/${row.id}`);
   };
 
+  const onPostearPolizas = async () => {
+    await toast.promise(dispatch(PostedPoliza()).unwrap(), {
+      error: "Error la mandar a ps ",
+      loading: "Enviando Polizas a PS",
+      success: "Polizas Enviadas",
+    });
+  };
+
   let {
     isFiltered,
     tableData,
@@ -200,7 +237,7 @@ export const usePolizasList = (tipo: string) => {
   } = useTable(polizas, pageSize, filterState);
 
   const onChange = (row: Poliza) => {
-    console.log(row);
+    dispatch(CheckedPoliza(row));
   };
 
   const descargar = (row: Poliza) => {
@@ -278,6 +315,7 @@ export const usePolizasList = (tipo: string) => {
         flex: 1,
         render: (_: string, row: Poliza) => getStatusBadge(row.tipo),
       },
+      // Estatus
       {
         title: (
           <HeaderCell
@@ -295,7 +333,7 @@ export const usePolizasList = (tipo: string) => {
         flex: 1,
         render: (_: string, row: Poliza) => getStatus(row.estatus),
       },
-
+      // Fecha
       {
         title: (
           <HeaderCell
@@ -316,30 +354,50 @@ export const usePolizasList = (tipo: string) => {
           <DateCell date={value} dateFormat="yyyy-MM-DD" />
         ),
       },
-      // {
-      //   title: (
-      //     <HeaderCell
-      //       title="Revisada"
-      //       sortable
-      //       ascending={
-      //         sortConfig?.direction === "asc" && sortConfig?.key === "check"
-      //       }
-      //     />
-      //   ),
-      //   onHeaderCell: () => onHeaderCellClick("check"),
-      //   dataIndex: "check",
-      //   key: "check",
-      //   minWidth: 100,
-      //   flex: 1,
-      //   render: (_: any, row: Poliza) => (
-      //     <Checkbox
-      //       value={row.check}
-      //       onChange={(e) =>
-      //         onChange({ ...row, check: e.target.checked ? 1 : 0 })
-      //       }
-      //     />
-      //   ),
-      // },
+      {
+        title: (
+          <HeaderCell
+            title="Cuadrada"
+            sortable
+            ascending={
+              sortConfig?.direction === "asc" && sortConfig?.key === "check"
+            }
+          />
+        ),
+        onHeaderCell: () => onHeaderCellClick("check"),
+        dataIndex: "check",
+        key: "check",
+        minWidth: 100,
+        flex: 1,
+        render: (value: number, row: Poliza) => {
+          let importe =
+            Math.round(
+              row.detalles?.reduce((total, item) => total + item.importe, 0) ??
+                0 * 100
+            ) / 100;
+          let cuadra = (Object.is(importe, -0) ? 0 : importe) === 0;
+
+          return (
+            <Checkbox
+              checked={value === 1}
+              value={value}
+              label={
+                <span className="flex items-center gap-1">
+                  {convertMoney(Object.is(importe, -0) ? 0 : importe)}
+                  <PiMoney className="h-4 w-4 " color="#064F1CFF" />
+                </span>
+              }
+              onChange={(e) =>
+                onChange({
+                  ...row,
+                  check: e.target.checked ? 1 : 0,
+                  estatus: e.target.checked ? "T" : "P",
+                })
+              }
+            />
+          );
+        },
+      },
 
       {
         title: <HeaderCell title="Actions" />,
@@ -376,7 +434,7 @@ export const usePolizasList = (tipo: string) => {
                 <PiFileXls className="h-4 w-4" />
               </ActionIcon>
             </Tooltip>
-            {row.estatus === "P" && (
+            {/* {row.estatus === "T" && (
               <Tooltip
                 size="sm"
                 content={"Postear"}
@@ -391,7 +449,7 @@ export const usePolizasList = (tipo: string) => {
                   <PiCaretCircleRightBold className="h-4 w-4" />
                 </ActionIcon>
               </Tooltip>
-            )}
+            )} */}
             {row.estatus === "P" && (
               <Tooltip
                 size="sm"
@@ -436,6 +494,44 @@ export const usePolizasList = (tipo: string) => {
   const { visibleColumns, checkedColumns, setCheckedColumns } =
     useColumn(columns);
 
+  const dataExcel = [
+    ...polizas.map((d, i) => {
+      let datos: Detalle[] = [
+        ...d.detalles.map((d) => {
+          let de: Detalle = {
+            id: d.id,
+            poliza: tipo,
+            origen: d.origen,
+            cuenta: d.cuenta.cuenta,
+            unidad: d.unidad.cve_unidad,
+            journal_id: d.journal_id,
+            departamento: d.departamento,
+            referencia: d.referencia,
+            descripcion: d.descripcion,
+            importe: d.importe,
+            createBy: d.createBy,
+            producto: "",
+            createAt: d.createAt,
+          };
+          return de;
+        }),
+      ];
+      return {
+        dataSheet: datos,
+        nameFile: "",
+        nameSheet:
+          tipo === "V"
+            ? `PolizaVentas-${moment(d.createAt).format("YYYY-MM-DD")}`
+            : tipo === "L"
+              ? `PolizaCobranza-${moment(d.createAt).format("YYYY-MM-DD")}`
+              : `PolizaCanceladas-${moment(d.createAt).format("YYYY-MM-DD")}`,
+      };
+    }),
+  ];
+
+  let isPendingPostPS =
+    polizas.filter((p) => p?.check === 1 && p.estatus === "T").length > 0;
+
   return {
     polizas,
     visibleColumns,
@@ -459,5 +555,8 @@ export const usePolizasList = (tipo: string) => {
     selectedRowKeys,
     handleDelete,
     loading,
+    dataExcel,
+    onPostearPolizas,
+    isPendingPostPS,
   };
 };

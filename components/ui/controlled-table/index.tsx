@@ -47,7 +47,9 @@ export const ControlledTable: FC<ControlledTableProps> = ({
   return (
     <>
       {!isEmpty(filterOptions) && (
-        <TableFilter {...filterOptions}>{filterElement}</TableFilter>
+        <TableFilter {...filterOptions} data={tableProps.data}>
+          {filterElement}
+        </TableFilter>
       )}
 
       <div className="relative">
