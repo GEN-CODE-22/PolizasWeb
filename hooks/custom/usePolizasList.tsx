@@ -7,7 +7,6 @@ import { useTable } from "../use-table";
 import { HeaderCell } from "@/components/ui/TableV2";
 import { ActionIcon, Badge, Checkbox, Text, Tooltip } from "rizzui";
 import {
-  PiCaretCircleRightBold,
   PiEyeDuotone,
   PiFileXls,
   PiMoney,
@@ -370,11 +369,10 @@ export const usePolizasList = (tipo: string) => {
         minWidth: 100,
         flex: 1,
         render: (value: number, row: Poliza) => {
-          let importe =
-            Math.round(
-              row.detalles?.reduce((total, item) => total + item.importe, 0) ??
-                0 * 100
-            ) / 100;
+          let importe = row.detalles?.reduce(
+            (total, item) => total + item.importe,
+            0
+          );
           let cuadra = (Object.is(importe, -0) ? 0 : importe) === 0;
 
           return (
@@ -382,9 +380,14 @@ export const usePolizasList = (tipo: string) => {
               checked={value === 1}
               value={value}
               label={
-                <span className="flex items-center gap-1">
+                <span
+                  className={`flex items-center gap-1 ${cuadra ? "#064F1CFF " : "#BA0B0BFF"}`}
+                >
                   {convertMoney(Object.is(importe, -0) ? 0 : importe)}
-                  <PiMoney className="h-4 w-4 " color="#064F1CFF" />
+                  <PiMoney
+                    className="h-4 w-4 "
+                    color={cuadra ? "#064F1CFF " : "#BA0B0BFF"}
+                  />
                 </span>
               }
               onChange={(e) =>

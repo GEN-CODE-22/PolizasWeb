@@ -205,34 +205,34 @@ export const usePoliza = () => {
         minWidth: 100,
         flex: 1,
         render: (value: any) => (
-          <DateCell date={value} dateFormat="yyyy-MM-DD hh:mm" />
+          <DateCell date={value} dateFormat="yyyy-MM-DD" />
         ),
       },
 
-      {
-        title: <HeaderCell title="Actions" />,
-        dataIndex: "action",
-        key: "action",
-        flex: 1,
-        render: (_: string, row: Poliza) => (
-          <div className="flex items-center gap-3 pe-4">
-            <Tooltip
-              size="sm"
-              content={"Editar"}
-              placement="top"
-              color="invert"
-            >
-              <ActionIcon
-                size="sm"
-                variant="outline"
-                onClick={() => onEdit(row)}
-              >
-                <PiNotePencil className="h-4 w-4" />
-              </ActionIcon>
-            </Tooltip>
-          </div>
-        ),
-      },
+      // {
+      //   title: <HeaderCell title="Actions" />,
+      //   dataIndex: "action",
+      //   key: "action",
+      //   flex: 1,
+      //   render: (_: string, row: Poliza) => (
+      //     <div className="flex items-center gap-3 pe-4">
+      //       <Tooltip
+      //         size="sm"
+      //         content={"Editar"}
+      //         placement="top"
+      //         color="invert"
+      //       >
+      //         <ActionIcon
+      //           size="sm"
+      //           variant="outline"
+      //           onClick={() => onEdit(row)}
+      //         >
+      //           <PiNotePencil className="h-4 w-4" />
+      //         </ActionIcon>
+      //       </Tooltip>
+      //     </div>
+      //   ),
+      // },
     ],
     [
       selectedRowKeys,

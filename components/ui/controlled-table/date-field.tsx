@@ -1,3 +1,4 @@
+import moment from "moment";
 import { DatePicker, DatePickerProps } from "../datepicker";
 
 export default function DateFiled({
@@ -6,6 +7,7 @@ export default function DateFiled({
   inputProps,
   ...props
 }: DatePickerProps<any> & { onClear?: () => void }) {
+  moment.locale("es");
   return (
     <div>
       <DatePicker

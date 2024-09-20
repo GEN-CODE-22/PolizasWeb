@@ -5,6 +5,7 @@ import { PiCalendarBlank, PiCaretDownBold } from "react-icons/pi";
 import ReactDatePicker, { type ReactDatePickerProps } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import cn from "@/utils/class-names";
+import moment from "moment";
 
 const calendarContainerClasses = {
   base: "[&.react-datepicker]:shadow-lg [&.react-datepicker]:border-gray-100 [&.react-datepicker]:rounded-md",
@@ -60,6 +61,8 @@ export const DatePicker = ({
   const handleCalenderOpen = () => setIsCalenderOpen(true);
   const handleCalenderClose = () => setIsCalenderOpen(false);
 
+  moment.locale("es");
+
   return (
     <div
       className={cn(
@@ -68,6 +71,7 @@ export const DatePicker = ({
       )}
     >
       <ReactDatePicker
+        locale={"es"}
         customInput={
           customInput || (
             <Input

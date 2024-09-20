@@ -74,10 +74,7 @@ export const DetallePoliza = () => {
             <Table.Summary.Cell key={column.key} index={index} align="right">
               {column.key === "importe"
                 ? convertMoney(
-                    Math.round(
-                      data?.reduce((total, item) => total + item.importe, 0) ??
-                        0 * 100
-                    ) / 100
+                    data?.reduce((total, item) => total + item.importe, 0) ?? 0
                   )
                 : null}
             </Table.Summary.Cell>

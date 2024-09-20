@@ -2,6 +2,7 @@ import DateFiled from "@/components/ui/controlled-table/date-field";
 import { StatusField } from "@/components/ui/controlled-table/status-field";
 import { PolizasState, setFiltros } from "@/redux/slices/polizas";
 import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
+import moment from "moment";
 import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useMedia } from "react-use";
@@ -12,6 +13,8 @@ interface Props {
 }
 
 export const FilterElement: FC<Props> = (props) => {
+  moment.locale("es");
+
   const dispatch = useDispatch<AppDispatch>();
 
   const { FechaFin, FechaInicio, tipoP } = useSelector<StoreApp, PolizasState>(

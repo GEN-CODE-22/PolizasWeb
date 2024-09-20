@@ -4,7 +4,6 @@ import {
   PiMagnifyingGlassBold,
   PiFunnel,
   PiXBold,
-  PiFileCsv,
   PiFileXls,
 } from "react-icons/pi";
 import { Button, ActionIcon, Input, Title } from "rizzui";
@@ -95,7 +94,7 @@ export const TableFilter: FC<TableFilterProps> = ({
   checkedColumns,
   setCheckedColumns,
   hideIndex,
-  drawerTitle = "Table Filters",
+  drawerTitle = "Tabla de filtros",
   hasSearched,
   enableDrawerFilter = false,
   showSearchOnTheRight = false,
