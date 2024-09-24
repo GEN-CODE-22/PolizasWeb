@@ -2,10 +2,16 @@ import { useState } from "react";
 import { Input, InputProps } from "rizzui";
 
 import { PiCalendarBlank, PiCaretDownBold } from "react-icons/pi";
-import ReactDatePicker, { type ReactDatePickerProps } from "react-datepicker";
+import ReactDatePicker, {
+  type ReactDatePickerProps,
+  registerLocale,
+} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import cn from "@/utils/class-names";
 import moment from "moment";
+
+import es from "date-fns/locale/es";
+registerLocale("es", es as any);
 
 const calendarContainerClasses = {
   base: "[&.react-datepicker]:shadow-lg [&.react-datepicker]:border-gray-100 [&.react-datepicker]:rounded-md",
@@ -60,8 +66,6 @@ export const DatePicker = ({
   const [isCalenderOpen, setIsCalenderOpen] = useState(false);
   const handleCalenderOpen = () => setIsCalenderOpen(true);
   const handleCalenderClose = () => setIsCalenderOpen(false);
-
-  moment.locale("es");
 
   return (
     <div

@@ -17,6 +17,7 @@ type ControlledTableProps = {
   className?: string;
   paginatorClassName?: string;
   footer?: PanelRender<DefaultRecordType> | undefined;
+  onClickResult?: (() => void) | undefined;
 } & TableProps;
 
 export const ControlledTable: FC<ControlledTableProps> = ({
@@ -28,7 +29,7 @@ export const ControlledTable: FC<ControlledTableProps> = ({
   showLoadingText,
   paginatorClassName,
   className,
-
+  onClickResult,
   ...tableProps
 }) => {
   if (isLoading) {
@@ -47,7 +48,11 @@ export const ControlledTable: FC<ControlledTableProps> = ({
   return (
     <>
       {!isEmpty(filterOptions) && (
-        <TableFilter {...filterOptions} data={tableProps.data}>
+        <TableFilter
+          {...filterOptions}
+          data={tableProps.data}
+          onClickResult={onClickResult}
+        >
           {filterElement}
         </TableFilter>
       )}

@@ -4,6 +4,7 @@ import { usePolizasList } from "@/hooks/custom/usePolizasList";
 import React, { FC, memo } from "react";
 import { FilterElement } from "./FilterElement";
 import { Button } from "rizzui";
+import { Poliza } from "@/interfaces/Poliza";
 
 interface Props {
   tipo: string;
@@ -36,6 +37,7 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
     dataExcel,
     isPendingPostPS,
     onPostearPolizas,
+    GetDataPolizas,
   } = usePolizasList(tipo);
 
   return (
@@ -49,9 +51,25 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
         variant="modern"
         showLoadingText={loading}
         data={tableData}
+        onClickResult={GetDataPolizas}
         // @ts-ignore
         columns={visibleColumns}
         isLoading={loading}
+        rowClassName={(item) => {
+          let poliza: Poliza = { ...(item as any) };
+
+          var importe = poliza.detalles?.reduce((t, i) => t + i.importe, 0);
+
+          // Redondea el valor para evitar problemas de precisión
+          const precision = 4; // Número de decimales que quieres mantener
+          importe = parseFloat(importe.toFixed(precision));
+
+          let cuadra = importe === 0;
+          if (!cuadra) {
+            return "bg-red-100";
+          }
+          return "";
+        }}
         paginatorOptions={{
           pageSize,
           setPageSize,

@@ -22,11 +22,13 @@ export const FilterDrawerView = ({
   drawerTitle,
   setOpenDrawer,
   children,
+  onClickResult,
 }: React.PropsWithChildren<{
   drawerTitle?: string;
   hasSearched?: boolean;
   setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen?: boolean;
+  onClickResult?: () => void;
 }>) => {
   return (
     <Drawer
@@ -57,7 +59,11 @@ export const FilterDrawerView = ({
         </div>
         <Button
           size="lg"
-          onClick={() => setOpenDrawer(false)}
+          onClick={() => {
+            !onClickResult && setOpenDrawer(false);
+
+            onClickResult && onClickResult();
+          }}
           className="mt-5 h-11 w-full text-sm"
         >
           Mostrar Resultados
@@ -83,6 +89,7 @@ export type TableFilterProps = {
   menu?: React.ReactNode;
   dataExcel?: TDocXLS[];
   nameFileExcel?: string;
+  onClickResult?: (() => void) | undefined;
   [key: string]: any;
 };
 
@@ -102,6 +109,8 @@ export const TableFilter: FC<TableFilterProps> = ({
   children,
   dataExcel,
   nameFileExcel,
+  onClickResult,
+
   ...props
 }) => {
   const isMediumScreen = useMedia("(max-width: 1860px)", false);
@@ -119,7 +128,7 @@ export const TableFilter: FC<TableFilterProps> = ({
         {!showSearchOnTheRight ? (
           <Input
             type="search"
-            placeholder="Search by anything..."
+            placeholder="Buscar"
             value={searchTerm}
             onClear={onSearchClear}
             onChange={onSearchChange}
@@ -141,6 +150,7 @@ export const TableFilter: FC<TableFilterProps> = ({
                 setOpenDrawer={setOpenDrawer}
                 drawerTitle={drawerTitle}
                 hasSearched={hasSearched}
+                onClickResult={onClickResult}
               >
                 {children}
               </FilterDrawerView>
@@ -197,13 +207,6 @@ export const TableFilter: FC<TableFilterProps> = ({
           hideIndex={hideIndex}
         />
         <Button
-          // {...(isMediumScreen || enableDrawerFilter
-          //   ? {
-          //       onClick: () => {
-          //         setOpenDrawer(() => !openDrawer);
-          //       },
-          //     }
-          //   : { onClick: () => setShowFilters(() => !showFilters) })}
           onClick={exportCVS}
           variant={"outline"}
           className={cn(

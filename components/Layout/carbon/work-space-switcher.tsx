@@ -82,10 +82,10 @@ function renderDisplayValue(value: SelectOption) {
     <div className="flex items-center gap-3">
       <Avatar name={value?.label} src={value?.avatar} size="sm" />
       <div>
-        <Text fontWeight="medium" className="text-gray-900">
+        <Text fontWeight="medium" className="text-white">
           {value.label}
         </Text>
-        <Text className="text-gray-500">Espacio de Trabajo</Text>
+        <Text className="text-white">Espacio de Trabajo</Text>
       </div>
     </div>
   );

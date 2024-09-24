@@ -152,10 +152,9 @@ export const usePolizasList = (tipo: string) => {
   const router = useRouter();
   const [pageSize, setPageSize] = useState(31);
 
-  const { polizas, loading, FechaFin, FechaInicio, tipoP } = useSelector<
-    StoreApp,
-    PolizasState
-  >((s) => s.polizas);
+  const { polizas, loading } = useSelector<StoreApp, PolizasState>(
+    (s) => s.polizas
+  );
 
   const { server } = useSelector<StoreApp, AppState>((s) => s.app);
 
@@ -165,17 +164,17 @@ export const usePolizasList = (tipo: string) => {
     dispatch(setTipoPoliza(tipo));
   };
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      if (!!FechaFin && !!FechaInicio) {
-        setTipo();
-        GetData();
-      }
-    }, 4000); // Ajusta el tiempo de debounce según sea necesario
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [FechaFin, FechaInicio]);
+  // useEffect(() => {
+  //   const handler = setTimeout(() => {
+  //     if (!!FechaFin && !!FechaInicio) {
+  //       setTipo();
+  //       GetDataPolizas();
+  //     }
+  //   }, 4000); // Ajusta el tiempo de debounce según sea necesario
+  //   return () => {
+  //     clearTimeout(handler);
+  //   };
+  // }, [FechaFin, FechaInicio]);
 
   useEffect(() => {
     setTipo();
@@ -185,11 +184,11 @@ export const usePolizasList = (tipo: string) => {
     if (!!server) {
       dispatch(setFiltros({ FechaFin: undefined, FechaInicio: undefined }));
       setTipo();
-      GetData();
+      GetDataPolizas();
     }
   }, [server]);
 
-  const GetData = () => dispatch(GetPolizas());
+  const GetDataPolizas = () => dispatch(GetPolizas());
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
@@ -369,11 +368,13 @@ export const usePolizasList = (tipo: string) => {
         minWidth: 100,
         flex: 1,
         render: (value: number, row: Poliza) => {
-          let importe = row.detalles?.reduce(
-            (total, item) => total + item.importe,
-            0
-          );
-          let cuadra = (Object.is(importe, -0) ? 0 : importe) === 0;
+          var importe = row.detalles?.reduce((t, i) => t + i.importe, 0);
+
+          // Redondea el valor para evitar problemas de precisión
+          const precision = 4; // Número de decimales que quieres mantener
+          importe = parseFloat(importe.toFixed(precision));
+
+          let cuadra = importe === 0;
 
           return (
             <Checkbox
@@ -383,7 +384,7 @@ export const usePolizasList = (tipo: string) => {
                 <span
                   className={`flex items-center gap-1 ${cuadra ? "#064F1CFF " : "#BA0B0BFF"}`}
                 >
-                  {convertMoney(Object.is(importe, -0) ? 0 : importe)}
+                  {convertMoney(importe === -0 ? 0 : importe)}
                   <PiMoney
                     className="h-4 w-4 "
                     color={cuadra ? "#064F1CFF " : "#BA0B0BFF"}
@@ -561,5 +562,6 @@ export const usePolizasList = (tipo: string) => {
     dataExcel,
     onPostearPolizas,
     isPendingPostPS,
+    GetDataPolizas,
   };
 };

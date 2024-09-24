@@ -29,7 +29,7 @@ export function CarbonSidebarMenu() {
     <div className="mb-auto">
       <Text
         as="span"
-        className="block px-[25px] pt-5 font-lexend text-xs uppercase text-gray-400 dark:text-gray-600"
+        className="block px-[25px] pt-5 font-lexend text-xs uppercase text-white "
       >
         Menu
       </Text>
@@ -60,8 +60,8 @@ export function CarbonSidebarMenu() {
                         className={cn(
                           "group relative mx-3.5 flex grow cursor-pointer items-center justify-between overflow-hidden rounded-md px-3 py-2.5 font-medium transition-all hover:ps-7 lg:my-1 2xl:my-2 2xl:me-5",
                           isDropdownOpen
-                            ? "bg-primary text-gray-0"
-                            : "text-gray-700 transition-all duration-200 hover:bg-gray-100 dark:text-gray-700/90 dark:hover:text-gray-700"
+                            ? "bg-slate-950 text-white"
+                            : "text-white transition-all duration-200 hover:bg-gray-500 "
                         )}
                       >
                         <span className="flex items-center">

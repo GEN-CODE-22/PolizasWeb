@@ -16,23 +16,23 @@ export const CarbonSidebar: FC<Props> = ({ className }) => {
   return (
     <aside
       className={cn(
-        "fixed bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-white dark:bg-gray-100/50 2xl:w-72",
+        "fixed bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-slate-900  2xl:w-72",
         className
       )}
     >
-      <div className="sticky top-0 z-40 bg-gray-0/10 px-6 pb-5 pt-5 dark:bg-gray-100/5 2xl:px-8 2xl:pt-6">
+      <div className="sticky top-0 z-40  px-6 pb-5 pt-5  2xl:px-8 2xl:pt-6">
         <Link
           href={"/"}
           aria-label="Site Logo"
-          className="text-gray-800 hover:text-gray-900"
+          className="text-white hover:text-gray-900"
         >
           <Logo className="max-w-[155px]" />
         </Link>
       </div>
 
       <WorkSpaceSwitcher
-        className="px-6 pb-3.5 pt-3.5"
-        suffixClassName="text-gray-500 w-5 h-5"
+        className="px-6 pb-3.5 pt-3.5 bg-slate-900 text-white"
+        suffixClassName="text-white w-5 h-5"
       />
 
       <SimpleBar
@@ -42,12 +42,13 @@ export const CarbonSidebar: FC<Props> = ({ className }) => {
       >
         <CarbonSidebarMenu />
 
-        <div className="sticky bottom-0 bg-gray-0 dark:bg-gray-50 ">
+        <div className="sticky bottom-0 bg-slate-900 ">
           <NeedSupport
             title="Necesitas Soporte?"
             text="Contacta a Julio Gonzalez de Sistemas."
             prefixIcon={<PiHeadsetBold className="h-5 w-5 text-gray-400" />}
-            className="relative mx-6 before:absolute before:-start-6 before:bottom-full before:end-0 before:h-10 before:w-[calc(100%+48px)] before:bg-gradient-to-t before:from-gray-0 before:to-gray-0/30 before:dark:from-gray-50 before:dark:to-gray-50/30"
+            // className="relative mx-6 before:absolute before:-start-6 before:bottom-full before:end-0 before:h-10 before:w-[calc(100%+48px)] before:bg-gradient-to-t before:from-gray-0 before:to-gray-0/30 before:dark:from-gray-50 before:dark:to-gray-50/30"
+            className="relative mx-6 before:absolute before:-start-6 before:bottom-full before:end-0 before:h-10 before:w-[calc(100%+48px)] bg-white"
           />
         </div>
       </SimpleBar>
