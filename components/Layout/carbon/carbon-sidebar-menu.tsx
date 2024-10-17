@@ -60,7 +60,7 @@ export function CarbonSidebarMenu() {
                         className={cn(
                           "group relative mx-3.5 flex grow cursor-pointer items-center justify-between overflow-hidden rounded-md px-3 py-2.5 font-medium transition-all hover:ps-7 lg:my-1 2xl:my-2 2xl:me-5",
                           isDropdownOpen
-                            ? "bg-slate-950 text-white"
+                            ? "bg-slate-900 text-white"
                             : "text-white transition-all duration-200 hover:bg-gray-500 "
                         )}
                       >

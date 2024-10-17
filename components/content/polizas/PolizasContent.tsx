@@ -66,7 +66,7 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
 
           let cuadra = importe === 0;
           if (!cuadra) {
-            return "bg-red-100";
+            return "!bg-red-100 hover:none";
           }
           return "";
         }}

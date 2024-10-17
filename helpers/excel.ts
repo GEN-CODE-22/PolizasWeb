@@ -19,7 +19,7 @@ export const exportToExcel = <T extends object>(data: T[], name: string) => {
   saveAs(blob, `${name}.xlsx`); // Guarda el archivo usando file-saver
 };
 
-export const exportToExcelCustom = (
+export const exportToExcelCustom2 = (
   data: TDocXLS[],
   name: string = "exported_data.xlsx"
 ) => {
@@ -42,4 +42,64 @@ export const exportToExcelCustom = (
   const blob = new Blob([excelBuffer], { type: "application/octet-stream" }); // Convierte el buffer a Blob
   saveAs(blob, `${name}`); // Guarda el archivo usando file-saver
   // XLSX.writeFile(workbook, name);
+};
+
+export const exportToExcelCustom = (
+  data: TDocXLS[],
+  name: string = "exported_data.xlsx"
+) => {
+  const workbook = XLSX.utils.book_new();
+
+  // Mapa para agrupar la información por 'descripcion'
+  let resumenMap: { [key: string]: any } = {};
+  let resumenHeaders: string[] = [];
+
+  // Iterar sobre los datos para preparar el resumen
+  data.forEach((obj) => {
+    // Obtener los encabezados de la hoja actual
+    const header = Object.keys(obj["dataSheet"][0]);
+
+    // Guardar los encabezados para el resumen (solo la primera vez)
+    if (resumenHeaders.length === 0) {
+      resumenHeaders = [...header];
+    }
+
+    // Agrupar por la columna 'descripcion' y sumar 'importe'
+    obj.dataSheet.forEach((row: any) => {
+      const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
+      const importeValue = row["importe"];
+
+      // Si no existe en el mapa el valor de 'descripcion', se inicializa
+      if (!resumenMap[descripcionValue]) {
+        resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
+      }
+
+      // Sumar el valor de 'importe' si es numérico
+      if (!isNaN(importeValue)) {
+        resumenMap[descripcionValue]["importe"] += parseFloat(importeValue);
+      }
+    });
+  });
+
+  // Convertir el mapa de resumen en un array para crear la hoja de resumen
+  const resumenData = Object.values(resumenMap);
+
+  // Crear la hoja de resumen con los mismos encabezados
+  const resumenSheet = XLSX.utils.json_to_sheet(resumenData, {
+    header: resumenHeaders,
+  });
+
+  // Agregar la hoja de resumen como la primera hoja
+  XLSX.utils.book_append_sheet(workbook, resumenSheet, "Resumen");
+
+  // Ahora agregar las demás hojas
+  data.forEach((obj) => {
+    const worksheet = XLSX.utils.json_to_sheet(obj.dataSheet);
+    XLSX.utils.book_append_sheet(workbook, worksheet, obj.nameSheet);
+  });
+
+  // Exportar el libro a un archivo Excel
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(blob, `${name}`);
 };

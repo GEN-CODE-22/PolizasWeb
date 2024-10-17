@@ -379,6 +379,7 @@ export const usePolizasList = (tipo: string) => {
           return (
             <Checkbox
               checked={value === 1}
+              disabled={!cuadra}
               value={value}
               label={
                 <span
@@ -505,17 +506,17 @@ export const usePolizasList = (tipo: string) => {
           let de: Detalle = {
             id: d.id,
             poliza: tipo,
-            origen: d.origen,
+            origen: d?.origen,
             cuenta: d.cuenta?.cuenta ?? "N/A",
             unidad: d.unidad?.cve_unidad ?? "N/A",
-            journal_id: d.journal_id,
-            departamento: d.departamento,
-            referencia: d.referencia,
-            descripcion: d.descripcion,
-            importe: d.importe,
-            createBy: d.createBy,
+            journal_id: d?.journal_id,
+            departamento: d?.departamento,
+            referencia: d?.referencia,
+            descripcion: d?.descripcion,
+            importe: d?.importe,
+            createBy: d?.createBy,
             producto: "",
-            createAt: d.createAt,
+            createAt: d?.createAt,
           };
           return de;
         }),

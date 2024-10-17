@@ -16,7 +16,7 @@ export const CarbonSidebar: FC<Props> = ({ className }) => {
   return (
     <aside
       className={cn(
-        "fixed bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-slate-900  2xl:w-72",
+        "fixed bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-slate-800 2xl:w-72",
         className
       )}
     >
@@ -31,7 +31,7 @@ export const CarbonSidebar: FC<Props> = ({ className }) => {
       </div>
 
       <WorkSpaceSwitcher
-        className="px-6 pb-3.5 pt-3.5 bg-slate-900 text-white"
+        className="px-6 pb-3.5 pt-3.5 bg-slate-800 text-white"
         suffixClassName="text-white w-5 h-5"
       />
 
@@ -42,7 +42,7 @@ export const CarbonSidebar: FC<Props> = ({ className }) => {
       >
         <CarbonSidebarMenu />
 
-        <div className="sticky bottom-0 bg-slate-900 ">
+        <div className="sticky bottom-0 bg-slate-800 ">
           <NeedSupport
             title="Necesitas Soporte?"
             text="Contacta a Julio Gonzalez de Sistemas."
