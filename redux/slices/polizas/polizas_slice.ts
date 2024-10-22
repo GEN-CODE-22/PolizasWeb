@@ -33,7 +33,7 @@ export const PolizasSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    setTipoPoliza: (state, action: PayloadAction<string>) => {
+    setTipoPoliza: (state, action: PayloadAction<string | undefined>) => {
       state.loading = true;
       state.polizas = [];
       state.tipoP = action.payload;

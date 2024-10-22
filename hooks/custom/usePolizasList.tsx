@@ -147,7 +147,7 @@ interface Detalle {
   producto: string;
   createAt: Date;
 }
-export const usePolizasList = (tipo: string) => {
+export const usePolizasList = (tipo?: string) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [pageSize, setPageSize] = useState(31);
@@ -500,12 +500,12 @@ export const usePolizasList = (tipo: string) => {
     useColumn(columns);
 
   const dataExcel = [
-    ...polizas.map((d, i) => {
+    ...polizas.map((p, i) => {
       let datos: Detalle[] = [
-        ...d.detalles.map((d) => {
+        ...p.detalles.map((d) => {
           let de: Detalle = {
             id: d.id,
-            poliza: tipo,
+            poliza: p?.tipo ?? "A",
             origen: d?.origen,
             cuenta: d.cuenta?.cuenta ?? "N/A",
             unidad: d.unidad?.cve_unidad ?? "N/A",
@@ -526,10 +526,10 @@ export const usePolizasList = (tipo: string) => {
         nameFile: "",
         nameSheet:
           tipo === "V"
-            ? `PolizaVentas-${moment(d.createAt).format("YYYY-MM-DD")}`
+            ? `PolizaVentas-${moment(p.createAt).format("YYYY-MM-DD")}`
             : tipo === "L"
-              ? `PolizaCobranza-${moment(d.createAt).format("YYYY-MM-DD")}`
-              : `PolizaCanceladas-${moment(d.createAt).format("YYYY-MM-DD")}`,
+              ? `PolizaCobranza-${moment(p.createAt).format("YYYY-MM-DD")}`
+              : `PolizaCanceladas-${moment(p.createAt).format("YYYY-MM-DD")}`,
       };
     }),
   ];

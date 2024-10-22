@@ -7,7 +7,7 @@ import { Button } from "rizzui";
 import { Poliza } from "@/interfaces/Poliza";
 
 interface Props {
-  tipo: string;
+  tipo?: string;
 }
 
 export const PolizasContent: FC<Props> = ({ tipo }) => {

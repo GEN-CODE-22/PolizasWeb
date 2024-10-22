@@ -114,6 +114,12 @@ export const carbonMenuItems: MenuItemsType[] = [
         icon: PiInvoiceDuotone,
       },
       {
+        name: "Polizas",
+        description: "",
+        href: "/poliza/all",
+        icon: PiInvoiceDuotone,
+      },
+      {
         name: "Poliza Canceladas",
         description: "",
         href: "/poliza/canceladas",
