@@ -90,11 +90,13 @@ export const CheckedPoliza = createAsyncThunk(
 
 export const PostedPoliza = createAsyncThunk(
   "PostedPoliza",
-  async (arg, { getState, dispatch }): Promise<boolean> => {
+  async (_, { getState }): Promise<Poliza[]> => {
     // Obtén el estado completo
-    // const state = getState() as StoreApp;
-    // console.log(arg, state.polizas);
-    const response = await PostedByManualPoliza();
+    const { polizas } = getState() as StoreApp;
+
+    var list = polizas.polizas.filter((p) => p.estatus === "T");
+
+    const response = await PostedByManualPoliza(list);
     return response;
   }
 );

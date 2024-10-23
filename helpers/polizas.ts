@@ -66,12 +66,17 @@ export const CheckedPolizaAPi = async (data: Poliza) => {
   }
 };
 
-export const PostedByManualPoliza = async (): Promise<boolean> => {
+export const PostedByManualPoliza = async (
+  polizas: Poliza[]
+): Promise<Poliza[]> => {
   try {
-    const response = await api.get(`/api/Poliza/PostedByManual`);
-    if (response.status === 200) return true;
-    return false;
+    const { status, data } = await api.post<Poliza[]>(
+      `/api/Poliza/PostedByManual`,
+      polizas
+    );
+    if (status === 200) return data;
+    throw new Error("Error al Mandar las polizas.");
   } catch (error) {
-    return false;
+    throw new Error("Error al Mandar las polizas.");
   }
 };

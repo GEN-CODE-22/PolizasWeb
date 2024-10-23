@@ -78,16 +78,15 @@ export const PolizasSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(PostedPoliza.fulfilled, (state, action) => {
-        ///Si se completo la tarea con exito poner en estatus "M" de proceso en PS
-        if (action.payload) {
-          state.polizas = [
-            ...state.polizas.map((item) =>
-              item.estatus === "T" && item?.check === 1
-                ? { ...item, estatus: "M" }
-                : item
-            ),
-          ];
-        }
+        state.polizas = state.polizas.map((polizaExistente) => {
+          // Intentamos encontrar la nueva póliza que coincida con el ID de la póliza existente
+          const nuevaPoliza = action.payload.find(
+            (p) => p.id === polizaExistente.id
+          );
+
+          // Si encontramos una coincidencia, la reemplazamos; si no, mantenemos la póliza existente
+          return nuevaPoliza ? nuevaPoliza : polizaExistente;
+        });
       })
       .addCase(PostedPoliza.rejected, (state, action) => {
         state.error = action.error.message;
