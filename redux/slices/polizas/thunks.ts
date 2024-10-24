@@ -83,8 +83,8 @@ export const CreatePolizaAll = (data: object) => {
 export const CheckedPoliza = createAsyncThunk(
   "CheckedPoliza",
   async (poliza: Poliza): Promise<Poliza> => {
-    const response = await CheckedPolizaAPi(poliza);
-    return response;
+    // const response = await CheckedPolizaAPi(poliza);
+    return poliza;
   }
 );
 
