@@ -18,6 +18,7 @@ type ControlledTableProps = {
   paginatorClassName?: string;
   footer?: PanelRender<DefaultRecordType> | undefined;
   onClickResult?: (() => void) | undefined;
+  options?: React.ReactNode | React.ReactNode[];
 } & TableProps;
 
 export const ControlledTable: FC<ControlledTableProps> = ({
@@ -30,6 +31,7 @@ export const ControlledTable: FC<ControlledTableProps> = ({
   paginatorClassName,
   className,
   onClickResult,
+  options,
   ...tableProps
 }) => {
   if (isLoading) {
@@ -52,6 +54,7 @@ export const ControlledTable: FC<ControlledTableProps> = ({
           {...filterOptions}
           data={tableProps.data}
           onClickResult={onClickResult}
+          options={options}
         >
           {filterElement}
         </TableFilter>

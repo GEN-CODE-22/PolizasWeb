@@ -13,6 +13,7 @@ import {
   PiXCircleBold,
 } from "react-icons/pi";
 import {
+  checkedAll,
   CheckedPoliza,
   GetPolizas,
   PolizasState,
@@ -211,6 +212,10 @@ export const usePolizasList = (tipo?: string) => {
       loading: "Enviando Polizas a PS",
       success: "Polizas Enviadas",
     });
+  };
+
+  const checked = () => {
+    dispatch(checkedAll());
   };
 
   let {
@@ -564,5 +569,6 @@ export const usePolizasList = (tipo?: string) => {
     onPostearPolizas,
     isPendingPostPS,
     GetDataPolizas,
+    checked,
   };
 };

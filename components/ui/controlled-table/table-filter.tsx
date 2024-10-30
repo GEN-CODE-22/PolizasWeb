@@ -90,6 +90,7 @@ export type TableFilterProps = {
   dataExcel?: TDocXLS[];
   nameFileExcel?: string;
   onClickResult?: (() => void) | undefined;
+  options?: React.ReactNode | React.ReactNode[];
   [key: string]: any;
 };
 
@@ -110,7 +111,7 @@ export const TableFilter: FC<TableFilterProps> = ({
   dataExcel,
   nameFileExcel,
   onClickResult,
-
+  options,
   ...props
 }) => {
   const isMediumScreen = useMedia("(max-width: 1860px)", false);
@@ -199,6 +200,7 @@ export const TableFilter: FC<TableFilterProps> = ({
               : "Filters"}
           </Button>
         ) : null}
+        {!!options && options}
 
         <ToggleColumns
           columns={columns}

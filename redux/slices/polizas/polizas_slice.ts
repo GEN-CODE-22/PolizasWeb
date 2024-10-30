@@ -62,6 +62,18 @@ export const PolizasSlice = createSlice({
         moment(a.createAt).diff(moment(b.createAt))
       );
     },
+    checkedAll: (state) => {
+      state.polizas = [
+        ...state.polizas.map((p) => {
+          if (p.estatus !== "P" && p.check === 1) return p;
+          return {
+            ...p,
+            check: 1,
+            estatus: "T",
+          };
+        }),
+      ];
+    },
   },
   extraReducers(builder) {
     builder
@@ -102,4 +114,5 @@ export const {
   setTipoPoliza,
   addPoliza,
   addPolizas,
+  checkedAll,
 } = PolizasSlice.actions;

@@ -5,6 +5,8 @@ import React, { FC, memo } from "react";
 import { FilterElement } from "./FilterElement";
 import { Button } from "rizzui";
 import { Poliza } from "@/interfaces/Poliza";
+import cn from "@/utils/class-names";
+import { FaCheckDouble } from "react-icons/fa";
 
 interface Props {
   tipo?: string;
@@ -38,6 +40,7 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
     isPendingPostPS,
     onPostearPolizas,
     GetDataPolizas,
+    checked,
   } = usePolizasList(tipo);
 
   return (
@@ -52,6 +55,15 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
         showLoadingText={loading}
         data={tableData}
         onClickResult={GetDataPolizas}
+        options={
+          <Button
+            onClick={checked}
+            variant={"outline"}
+            className={cn("me-2.5 h-9 pe-3 ps-2.5")}
+          >
+            <FaCheckDouble className="h-[25px] w-[25px]" strokeWidth={1.7} />
+          </Button>
+        }
         // @ts-ignore
         columns={visibleColumns}
         isLoading={loading}
