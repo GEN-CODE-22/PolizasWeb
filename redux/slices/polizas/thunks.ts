@@ -59,6 +59,8 @@ export const CreatePoliza = (data: object) => {
     }
     toast.dismiss();
 
+    dispatch(setLoading(false));
+
     toast.success("Poliza creada 👍🏻");
   };
 };

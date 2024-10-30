@@ -44,16 +44,20 @@ export const FormPoliza = () => {
           CreateBy: user,
         })
       );
+    } else {
+      dispatch(
+        CreatePoliza({
+          TipoPoliza:
+            values.tipo === "V"
+              ? 0
+              : values.tipo === "L"
+                ? 2
+                : values.tipo === "C" && 1,
+          Fecha: new Date(values.fecha),
+          CreateBy: user,
+        })
+      );
     }
-    // else {
-    //   dispatch(
-    //     CreatePoliza({
-    //       tipo: values.tipo,
-    //       fecha: new Date(values.fecha),
-    //       createBy: user,
-    //     })
-    //   );
-    // }
   };
 
   const { formState, trigger, register, setValue } = methods;
@@ -105,7 +109,7 @@ export const FormPoliza = () => {
             className="[&>label>span]:font-medium"
             options={tipoPoliza}
             value={poliza}
-            disabled
+            // disabled
             //    onChange={(e) => setPoliza(e.target.value as string)}
             onChange={(e) => {
               setPoliza(e as any);
