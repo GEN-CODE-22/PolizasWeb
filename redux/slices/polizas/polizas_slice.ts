@@ -65,11 +65,13 @@ export const PolizasSlice = createSlice({
     checkedAll: (state) => {
       state.polizas = [
         ...state.polizas.map((p) => {
-          if (p.estatus !== "P" && p.check === 1) return p;
+          if ((p.estatus === "M" || p.estatus === "G") && p.check === 1)
+            return p;
+
           return {
             ...p,
-            check: 1,
-            estatus: "T",
+            check: p.check === 1 ? 0 : 1,
+            estatus: p.estatus === "T" ? "P" : "T",
           };
         }),
       ];
