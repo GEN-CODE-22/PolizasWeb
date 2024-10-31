@@ -1,7 +1,7 @@
 import { Poliza } from "@/interfaces/Poliza";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
-import { CheckedPoliza, PostedPoliza } from "./thunks";
+import { CheckedPoliza, PostedPoliza, RecoveryPostedPoliza } from "./thunks";
 
 export interface PolizasState {
   polizas: Poliza[];
@@ -103,6 +103,20 @@ export const PolizasSlice = createSlice({
         });
       })
       .addCase(PostedPoliza.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(RecoveryPostedPoliza.fulfilled, (state, action) => {
+        state.polizas = state.polizas.map((polizaExistente) => {
+          // Intentamos encontrar la nueva póliza que coincida con el ID de la póliza existente
+          const nuevaPoliza = action.payload.find(
+            (p) => p.id === polizaExistente.id
+          );
+
+          // Si encontramos una coincidencia, la reemplazamos; si no, mantenemos la póliza existente
+          return nuevaPoliza ? nuevaPoliza : polizaExistente;
+        });
+      })
+      .addCase(RecoveryPostedPoliza.rejected, (state, action) => {
         state.error = action.error.message;
       });
   },
