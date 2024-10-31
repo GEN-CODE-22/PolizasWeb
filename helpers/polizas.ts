@@ -80,3 +80,18 @@ export const PostedByManualPoliza = async (
     throw new Error("Error al Mandar las polizas.");
   }
 };
+
+export const RecoveryPostedByManualPoliza = async (
+  polizas: Poliza[]
+): Promise<Poliza[]> => {
+  try {
+    const { status, data } = await api.post<Poliza[]>(
+      `/api/Poliza/GetAsientoByManual`,
+      polizas
+    );
+    if (status === 200) return data;
+    throw new Error("Error al Mandar las polizas.");
+  } catch (error) {
+    throw new Error("Error al Mandar las polizas.");
+  }
+};

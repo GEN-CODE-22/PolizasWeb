@@ -3,10 +3,11 @@ import { ControlledTable } from "@/components/ui/controlled-table";
 import { usePolizasList } from "@/hooks/custom/usePolizasList";
 import React, { FC, memo } from "react";
 import { FilterElement } from "./FilterElement";
-import { Button } from "rizzui";
+import { Button, Tooltip } from "rizzui";
 import { Poliza } from "@/interfaces/Poliza";
 import cn from "@/utils/class-names";
 import { FaCheckDouble } from "react-icons/fa";
+import { BiGitPullRequest } from "react-icons/bi";
 
 interface Props {
   tipo?: string;
@@ -41,6 +42,8 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
     onPostearPolizas,
     GetDataPolizas,
     checked,
+    isPendienteRecuperar,
+    RecuperarFolios,
   } = usePolizasList(tipo);
 
   return (
@@ -56,13 +59,28 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
         data={tableData}
         onClickResult={GetDataPolizas}
         options={
-          <Button
-            onClick={checked}
-            variant={"outline"}
-            className={cn("me-2.5 h-9 pe-3 ps-2.5")}
-          >
-            <FaCheckDouble className="h-[25px] w-[25px]" strokeWidth={1.7} />
-          </Button>
+          <div>
+            <Tooltip content={"Seleccionar Todo"}>
+              <Button
+                onClick={checked}
+                variant={"outline"}
+                className={cn("me-2.5 h-9 pe-3 ps-2.5")}
+              >
+                <FaCheckDouble className="h-[25px] w-[25px]" />
+              </Button>
+            </Tooltip>
+            {isPendienteRecuperar.length > 0 && (
+              <Tooltip content={"Recupera Folio"}>
+                <Button
+                  onClick={RecuperarFolios}
+                  variant={"outline"}
+                  className={cn("me-2.5 h-9 pe-3 ps-2.5")}
+                >
+                  <BiGitPullRequest className="h-[25px] w-[25px]" />
+                </Button>
+              </Tooltip>
+            )}
+          </div>
         }
         // @ts-ignore
         columns={visibleColumns}

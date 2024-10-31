@@ -18,6 +18,7 @@ import {
   GetPolizas,
   PolizasState,
   PostedPoliza,
+  RecoveryPostedPoliza,
   setFiltros,
   setPoliza,
   setTipoPoliza,
@@ -218,6 +219,10 @@ export const usePolizasList = (tipo?: string) => {
     dispatch(checkedAll());
   };
 
+  const isPendienteRecuperar = polizas.filter(
+    (p) => p.estatus === "M" && p.check === 1
+  );
+
   let {
     isFiltered,
     tableData,
@@ -357,6 +362,7 @@ export const usePolizasList = (tipo?: string) => {
           <DateCell date={value} dateFormat="yyyy-MM-DD" />
         ),
       },
+      //
       {
         title: (
           <HeaderCell
@@ -384,7 +390,7 @@ export const usePolizasList = (tipo?: string) => {
           return (
             <Checkbox
               checked={value === 1}
-              disabled={!cuadra}
+              disabled={!cuadra || row.estatus === "G"}
               value={value}
               label={
                 <span
@@ -542,6 +548,10 @@ export const usePolizasList = (tipo?: string) => {
   let isPendingPostPS =
     polizas.filter((p) => p?.check === 1 && p.estatus === "T").length > 0;
 
+  const RecuperarFolios = () => {
+    dispatch(RecoveryPostedPoliza());
+  };
+
   return {
     polizas,
     visibleColumns,
@@ -570,5 +580,7 @@ export const usePolizasList = (tipo?: string) => {
     isPendingPostPS,
     GetDataPolizas,
     checked,
+    isPendienteRecuperar,
+    RecuperarFolios,
   };
 };
