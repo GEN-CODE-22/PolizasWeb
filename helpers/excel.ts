@@ -108,6 +108,86 @@ export const exportToExcelCustom2 = (
 //   saveAs(blob, `${name}`);
 // };
 
+// export const exportToExcelCustom = (
+//   data: TDocXLS[],
+//   name: string = "exported_data.xlsx"
+// ) => {
+//   const workbook = XLSX.utils.book_new();
+
+//   // Mapa para agrupar la información por 'descripcion'
+//   let resumenMap: { [key: string]: any } = {};
+//   let resumenHeaders: string[] = [];
+
+//   // Iterar sobre los datos para preparar el resumen
+//   data.forEach((obj) => {
+//     let head = obj["dataSheet"][0];
+//     if (!head) return;
+
+//     // Obtener los encabezados de la hoja actual
+//     const header = Object?.keys(head);
+
+//     // Guardar los encabezados para el resumen (solo la primera vez)
+//     if (resumenHeaders.length === 0) {
+//       resumenHeaders = [...header];
+//     }
+
+//     // Agrupar por la columna 'descripcion' y sumar 'importe'
+//     obj.dataSheet.forEach((row: any) => {
+//       const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
+//       const importeValue = row["importe"];
+
+//       // Si no existe en el mapa el valor de 'descripcion', se inicializa
+//       if (!resumenMap[descripcionValue]) {
+//         resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
+//       }
+
+//       // Sumar el valor de 'importe' si es numérico
+//       if (!isNaN(importeValue)) {
+//         resumenMap[descripcionValue]["importe"] += parseFloat(importeValue);
+//       }
+//     });
+//   });
+
+//   // Convertir el mapa de resumen en un array para crear la hoja de resumen
+//   const resumenData = Object.values(resumenMap);
+
+//   // Crear la hoja de resumen con los mismos encabezados
+//   const resumenSheet = XLSX.utils.json_to_sheet(resumenData, {
+//     header: resumenHeaders,
+//   });
+
+//   // Agregar la hoja de resumen como la primera hoja
+//   XLSX.utils.book_append_sheet(workbook, resumenSheet, "Resumen");
+
+//   // Ahora agregar las demás hojas
+//   data.forEach((obj) => {
+//     const worksheet = XLSX.utils.json_to_sheet(obj.dataSheet);
+
+//     // Asignar nombre dinámico según 'poliza'
+//     let sheetName = "Desconocido";
+
+//     let polizaValue = (obj.dataSheet[0] as any)?.poliza; // Suponiendo que 'poliza' es consistente en cada hoja
+//     let date = (obj.dataSheet[0] as any)?.createAt as Date; // Suponiendo que 'poliza' es consistente en cada hoja
+
+//     if (polizaValue === "V") {
+//       sheetName = "Ventas";
+//     } else if (polizaValue === "L") {
+//       sheetName = "Cobranza";
+//     } else if (polizaValue === "C") {
+//       sheetName = "Canceladas";
+//     }
+
+//     sheetName = sheetName + " " + moment(date).format("YYYY-MM-DD");
+
+//     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+//   });
+
+//   // Exportar el libro a un archivo Excel
+//   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+//   const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+//   saveAs(blob, `${name}`);
+// };
+
 export const exportToExcelCustom = (
   data: TDocXLS[],
   name: string = "exported_data.xlsx"
@@ -132,18 +212,85 @@ export const exportToExcelCustom = (
     }
 
     // Agrupar por la columna 'descripcion' y sumar 'importe'
+    // obj.dataSheet.forEach((row: any) => {
+    //   const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
+    //   const importeValue = parseFloat(row["importe"]);
+
+    //   // Si no existe en el mapa el valor de 'descripcion', se inicializa
+    //   if (!resumenMap[descripcionValue]) {
+    //     resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
+    //   }
+
+    //   if (!isNaN(importeValue)) {
+    //     resumenMap[descripcionValue]["importe"] += Math.abs(importeValue);
+    //   }
+    //   // // Sumar el valor de 'importe' si es numérico (positivos y negativos)
+    //   // if (!isNaN(importeValue)) {
+    //   //   resumenMap[descripcionValue]["importe"] = importeValue;
+    //   // }
+    // });
+
+    // obj.dataSheet.forEach((row: any) => {
+    //   const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
+    //   const importeValue = parseFloat(row["importe"]); // Limpia el importe y lo convierte a número
+
+    //   // Inicializar la entrada en el mapa si no existe
+    //   if (!resumenMap[descripcionValue]) {
+    //     resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
+    //   }
+
+    //   // Condición específica para "Venta Gas Canceladas"
+    //   if (descripcionValue === "Venta Gas Canceladas") {
+    //     // Solo sumar valores positivos
+    //     if (importeValue > 0) {
+    //       resumenMap[descripcionValue]["importe"] += importeValue;
+    //     }
+    //   } else {
+    //     // Sumar normalmente (positivos y negativos)
+    //     if (!isNaN(importeValue)) {
+    //       resumenMap[descripcionValue]["importe"] += importeValue;
+    //     }
+    //   }
+    // });
+
     obj.dataSheet.forEach((row: any) => {
       const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
-      const importeValue = row["importe"];
+      const importeValue = parseFloat(row["importe"]); // Limpia el importe y lo convierte a número
 
-      // Si no existe en el mapa el valor de 'descripcion', se inicializa
-      if (!resumenMap[descripcionValue]) {
-        resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
-      }
+      // Inicializar entradas en el mapa si no existen
+      const positiveKey = `${descripcionValue} Positivos`;
+      const negativeKey = `${descripcionValue} Negativos`;
 
-      // Sumar el valor de 'importe' si es numérico
-      if (!isNaN(importeValue)) {
-        resumenMap[descripcionValue]["importe"] += parseFloat(importeValue);
+      if (descripcionValue === "Venta Gas Canceladas") {
+        if (importeValue > 0) {
+          // Procesar positivos
+          if (!resumenMap[positiveKey]) {
+            resumenMap[positiveKey] = {
+              ...row,
+              descripcion: positiveKey,
+              importe: 0,
+            }; // Cambia la descripción
+          }
+          resumenMap[positiveKey]["importe"] += importeValue;
+        } else if (importeValue < 0) {
+          // Procesar negativos
+          if (!resumenMap[negativeKey]) {
+            resumenMap[negativeKey] = {
+              ...row,
+              descripcion: negativeKey,
+              importe: 0,
+            }; // Cambia la descripción
+          }
+          resumenMap[negativeKey]["importe"] += importeValue;
+        }
+      } else {
+        // Caso general para otras descripciones
+        if (!resumenMap[descripcionValue]) {
+          resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
+        }
+        if (!isNaN(importeValue)) {
+          resumenMap[descripcionValue]["importe"] += importeValue;
+        }
       }
     });
   });

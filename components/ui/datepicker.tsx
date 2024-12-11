@@ -8,10 +8,9 @@ import ReactDatePicker, {
 } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import cn from "@/utils/class-names";
-import moment from "moment";
 
-import es from "date-fns/locale/es";
-registerLocale("es", es as any);
+import { es } from "date-fns/locale/es";
+registerLocale("es", es);
 
 const calendarContainerClasses = {
   base: "[&.react-datepicker]:shadow-lg [&.react-datepicker]:border-gray-100 [&.react-datepicker]:rounded-md",
