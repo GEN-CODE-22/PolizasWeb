@@ -261,7 +261,7 @@ export const exportToExcelCustom = (
       const positiveKey = `${descripcionValue} Positivos`;
       const negativeKey = `${descripcionValue} Negativos`;
 
-      if (descripcionValue === "Venta Gas Canceladas") {
+      if (descripcionValue === "CFDI Cancelados Gas") {
         if (importeValue > 0) {
           // Procesar positivos
           if (!resumenMap[positiveKey]) {
