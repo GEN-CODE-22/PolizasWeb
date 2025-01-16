@@ -88,7 +88,10 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
         rowClassName={(item) => {
           let poliza: Poliza = { ...(item as any) };
 
-          var importe = poliza.detalles?.reduce((t, i) => t + i.importe, 0);
+          var importe =
+            poliza.detalles.length > 0
+              ? poliza.detalles?.reduce((t, i) => t + i.importe, 0)
+              : -1;
 
           // Redondea el valor para evitar problemas de precisión
           const precision = 4; // Número de decimales que quieres mantener

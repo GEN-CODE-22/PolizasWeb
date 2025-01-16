@@ -2,6 +2,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { TDocXLS } from "@/interfaces";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 export const exportToExcel = <T extends object>(data: T[], name: string) => {
   // Define los encabezados manualmente
@@ -211,48 +212,6 @@ export const exportToExcelCustom = (
       resumenHeaders = [...header];
     }
 
-    // Agrupar por la columna 'descripcion' y sumar 'importe'
-    // obj.dataSheet.forEach((row: any) => {
-    //   const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
-    //   const importeValue = parseFloat(row["importe"]);
-
-    //   // Si no existe en el mapa el valor de 'descripcion', se inicializa
-    //   if (!resumenMap[descripcionValue]) {
-    //     resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
-    //   }
-
-    //   if (!isNaN(importeValue)) {
-    //     resumenMap[descripcionValue]["importe"] += Math.abs(importeValue);
-    //   }
-    //   // // Sumar el valor de 'importe' si es numérico (positivos y negativos)
-    //   // if (!isNaN(importeValue)) {
-    //   //   resumenMap[descripcionValue]["importe"] = importeValue;
-    //   // }
-    // });
-
-    // obj.dataSheet.forEach((row: any) => {
-    //   const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
-    //   const importeValue = parseFloat(row["importe"]); // Limpia el importe y lo convierte a número
-
-    //   // Inicializar la entrada en el mapa si no existe
-    //   if (!resumenMap[descripcionValue]) {
-    //     resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
-    //   }
-
-    //   // Condición específica para "Venta Gas Canceladas"
-    //   if (descripcionValue === "Venta Gas Canceladas") {
-    //     // Solo sumar valores positivos
-    //     if (importeValue > 0) {
-    //       resumenMap[descripcionValue]["importe"] += importeValue;
-    //     }
-    //   } else {
-    //     // Sumar normalmente (positivos y negativos)
-    //     if (!isNaN(importeValue)) {
-    //       resumenMap[descripcionValue]["importe"] += importeValue;
-    //     }
-    //   }
-    // });
-
     obj.dataSheet.forEach((row: any) => {
       const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
       const importeValue = parseFloat(row["importe"]); // Limpia el importe y lo convierte a número
@@ -306,8 +265,9 @@ export const exportToExcelCustom = (
   // Agregar la hoja de resumen como la primera hoja
   XLSX.utils.book_append_sheet(workbook, resumenSheet, "Resumen");
 
+  console.log(data);
   // Ahora agregar las demás hojas
-  data.forEach((obj) => {
+  data.forEach((obj, i) => {
     const worksheet = XLSX.utils.json_to_sheet(obj.dataSheet);
 
     // Asignar nombre dinámico según 'poliza'
@@ -323,6 +283,9 @@ export const exportToExcelCustom = (
     } else if (polizaValue === "C") {
       sheetName = "Canceladas";
     }
+
+    if (!polizaValue || !date)
+      return toast.error(`La poliza ${obj?.nameSheet} no esta completa.`); //Como un continue;
 
     sheetName = sheetName + " " + moment(date).format("YYYY-MM-DD");
 

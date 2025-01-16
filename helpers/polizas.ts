@@ -95,3 +95,16 @@ export const RecoveryPostedByManualPoliza = async (
     throw new Error("Error al Mandar las polizas.");
   }
 };
+
+export const RefreshPolizaApi = async (poliza: Poliza): Promise<Poliza> => {
+  try {
+    const { status, data } = await api.post<Poliza>(
+      `/api/Poliza/RefreshPoliza`,
+      poliza
+    );
+    if (status === 200) return data;
+    throw new Error("Error al actualizar poliza");
+  } catch (error) {
+    throw new Error("Error al Mandar las polizas.");
+  }
+};

@@ -1,7 +1,12 @@
 import { Poliza } from "@/interfaces/Poliza";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
-import { CheckedPoliza, PostedPoliza, RecoveryPostedPoliza } from "./thunks";
+import {
+  CheckedPoliza,
+  PostedPoliza,
+  RecoveryPostedPoliza,
+  RefreshPoliza,
+} from "./thunks";
 
 export interface PolizasState {
   polizas: Poliza[];
@@ -80,6 +85,15 @@ export const PolizasSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(CheckedPoliza.fulfilled, (state, action) => {
+        state.polizas = [
+          ...state.polizas.map((item) =>
+            item.id === action.payload.id
+              ? { ...item, ...action.payload }
+              : item
+          ),
+        ];
+      })
+      .addCase(RefreshPoliza.fulfilled, (state, action) => {
         state.polizas = [
           ...state.polizas.map((item) =>
             item.id === action.payload.id

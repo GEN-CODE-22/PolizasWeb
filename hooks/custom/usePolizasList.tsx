@@ -6,12 +6,7 @@ import { useRouter } from "next/router";
 import { useTable } from "../use-table";
 import { HeaderCell } from "@/components/ui/TableV2";
 import { ActionIcon, Badge, Checkbox, Text, Tooltip } from "rizzui";
-import {
-  PiEyeDuotone,
-  PiFileXls,
-  PiMoney,
-  PiXCircleBold,
-} from "react-icons/pi";
+import { PiEyeDuotone, PiFileXls, PiMoney } from "react-icons/pi";
 import {
   checkedAll,
   CheckedPoliza,
@@ -19,6 +14,7 @@ import {
   PolizasState,
   PostedPoliza,
   RecoveryPostedPoliza,
+  RefreshPoliza,
   setFiltros,
   setPoliza,
   setTipoPoliza,
@@ -33,6 +29,7 @@ import { DetallePoliza } from "@/components/content/polizas/DetallePoliza";
 import { convertMoney } from "@/utils/tools";
 import { TDocXLS } from "@/interfaces";
 import toast from "react-hot-toast";
+import { FcRefresh } from "react-icons/fc";
 
 interface DataType {
   key: number;
@@ -285,6 +282,10 @@ export const usePolizasList = (tipo?: string) => {
     );
   };
 
+  const refresh = async (row: Poliza) => {
+    let updateP = await dispatch(RefreshPoliza(row));
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -379,7 +380,10 @@ export const usePolizasList = (tipo?: string) => {
         minWidth: 100,
         flex: 1,
         render: (value: number, row: Poliza) => {
-          var importe = row.detalles?.reduce((t, i) => t + i.importe, 0);
+          let importe =
+            row.detalles.length > 0
+              ? row.detalles?.reduce((t, i) => t + i.importe, 0)
+              : -1;
 
           // Redondea el valor para evitar problemas de precisión
           const precision = 4; // Número de decimales que quieres mantener
@@ -420,37 +424,61 @@ export const usePolizasList = (tipo?: string) => {
         dataIndex: "action",
         key: "action",
         flex: 1,
-        render: (_: string, row: Poliza) => (
-          <div className="flex items-center gap-3 pe-4">
-            <Tooltip
-              size="sm"
-              content={"Ver Detalle"}
-              placement="top"
-              color="invert"
-            >
-              <ActionIcon
+        render: (_: string, row: Poliza) => {
+          let importe =
+            row.detalles.length > 0
+              ? row.detalles?.reduce((t, i) => t + i.importe, 0) * 1
+              : -1;
+
+          return (
+            <div className="flex items-center gap-3 pe-4">
+              <Tooltip
                 size="sm"
-                variant="outline"
-                onClick={() => handleCreateModal(row)}
+                content={"Ver Detalle"}
+                placement="top"
+                color="invert"
               >
-                <PiEyeDuotone className="h-4 w-4" />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip
-              size="sm"
-              content={"Descargar"}
-              placement="top"
-              color="invert"
-            >
-              <ActionIcon
-                size="sm"
-                variant="outline"
-                onClick={() => descargar(row)}
-              >
-                <PiFileXls className="h-4 w-4" />
-              </ActionIcon>
-            </Tooltip>
-            {/* {row.estatus === "T" && (
+                <ActionIcon
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleCreateModal(row)}
+                >
+                  <PiEyeDuotone className="h-4 w-4" />
+                </ActionIcon>
+              </Tooltip>
+              {importe !== -1 && (
+                <Tooltip
+                  size="sm"
+                  content={"Descargar"}
+                  placement="top"
+                  color="invert"
+                >
+                  <ActionIcon
+                    size="sm"
+                    variant="outline"
+                    onClick={() => descargar(row)}
+                  >
+                    <PiFileXls className="h-4 w-4" />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+              {Math.abs(importe).toFixed(0) !== "0" && (
+                <Tooltip
+                  size="sm"
+                  content={"Refresh Poliza"}
+                  placement="top"
+                  color="invert"
+                >
+                  <ActionIcon
+                    size="sm"
+                    variant="outline"
+                    onClick={() => refresh(row)}
+                  >
+                    <FcRefresh className="h-4 w-4" />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+              {/* {row.estatus === "T" && (
               <Tooltip
                 size="sm"
                 content={"Postear"}
@@ -466,24 +494,25 @@ export const usePolizasList = (tipo?: string) => {
                 </ActionIcon>
               </Tooltip>
             )} */}
-            {row.estatus === "P" && (
-              <Tooltip
-                size="sm"
-                content={"Cancelar"}
-                placement="top"
-                color="invert"
-              >
-                <ActionIcon
+              {/* {row.estatus === "P" && (
+                <Tooltip
                   size="sm"
-                  variant="outline"
-                  // onClick={() => onEdit(row)}
+                  content={"Cancelar"}
+                  placement="top"
+                  color="invert"
                 >
-                  <PiXCircleBold className="h-4 w-4" />
-                </ActionIcon>
-              </Tooltip>
-            )}
-          </div>
-        ),
+                  <ActionIcon
+                    size="sm"
+                    variant="outline"
+                    // onClick={() => onEdit(row)}
+                  >
+                    <PiXCircleBold className="h-4 w-4" />
+                  </ActionIcon>
+                </Tooltip>
+              )} */}
+            </div>
+          );
+        },
       },
     ],
     [

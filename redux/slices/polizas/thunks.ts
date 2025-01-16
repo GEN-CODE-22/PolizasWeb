@@ -19,6 +19,7 @@ import {
   GetPolizasID,
   PostedByManualPoliza,
   RecoveryPostedByManualPoliza,
+  RefreshPolizaApi,
 } from "@/helpers/polizas";
 import toast from "react-hot-toast";
 import moment from "moment";
@@ -119,6 +120,19 @@ export const RecoveryPostedPoliza = createAsyncThunk(
       loading: "Buscando folio contable",
       success: "Busqueda Completada",
     });
+    return response;
+  }
+);
+
+export const RefreshPoliza = createAsyncThunk(
+  "RefreshPoliza",
+  async (poliza: Poliza): Promise<Poliza> => {
+    const response = await toast.promise(RefreshPolizaApi(poliza), {
+      error: "Error al recuperar Folio",
+      loading: "Buscando folio contable",
+      success: "Busqueda Completada",
+    });
+
     return response;
   }
 );
