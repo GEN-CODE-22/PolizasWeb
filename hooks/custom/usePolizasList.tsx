@@ -30,6 +30,7 @@ import { convertMoney } from "@/utils/tools";
 import { TDocXLS } from "@/interfaces";
 import toast from "react-hot-toast";
 import { FcRefresh } from "react-icons/fc";
+import { ControlledTable } from "@/components/ui/controlled-table";
 
 interface DataType {
   key: number;
@@ -159,6 +160,10 @@ export const usePolizasList = (tipo?: string) => {
 
   const { closeModal, openModal } = useModal();
 
+  const [openDetail, setopenDetail] = useState(false);
+
+  const [errorPoliza, setErrorPoliza] = useState<Poliza[]>([]);
+
   const setTipo = () => {
     dispatch(setTipoPoliza(tipo));
   };
@@ -213,7 +218,22 @@ export const usePolizasList = (tipo?: string) => {
   };
 
   const checked = () => {
-    dispatch(checkedAll());
+    ///Revisar que no tenga cuenta contable null
+
+    setopenDetail(false);
+    setErrorPoliza([]);
+    var tienenull = polizas.filter(
+      (p) => p.detalles.filter((d) => !d.cuenta).length > 0
+    );
+
+    if (tienenull.length > 0) {
+      setopenDetail(true);
+      toast.error("Tienes polizas sin cuenta contable");
+
+      setErrorPoliza(tienenull);
+    } else {
+      dispatch(checkedAll());
+    }
   };
 
   const isPendienteRecuperar = polizas.filter(
@@ -611,5 +631,8 @@ export const usePolizasList = (tipo?: string) => {
     checked,
     isPendienteRecuperar,
     RecuperarFolios,
+    openDetail,
+    setopenDetail,
+    errorPoliza,
   };
 };

@@ -3,7 +3,7 @@ import { ControlledTable } from "@/components/ui/controlled-table";
 import { usePolizasList } from "@/hooks/custom/usePolizasList";
 import React, { FC, memo } from "react";
 import { FilterElement } from "./FilterElement";
-import { Button, Tooltip } from "rizzui";
+import { Button, Modal, Tooltip } from "rizzui";
 import { Poliza } from "@/interfaces/Poliza";
 import cn from "@/utils/class-names";
 import { FaCheckDouble } from "react-icons/fa";
@@ -44,6 +44,9 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
     checked,
     isPendienteRecuperar,
     RecuperarFolios,
+    openDetail,
+    setopenDetail,
+    errorPoliza,
   } = usePolizasList(tipo);
 
   return (
@@ -151,6 +154,28 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
         }
         className="rounded-md border border-muted text-sm shadow-sm [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:h-60 [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:justify-center [&_.rc-table-row:last-child_td.rc-table-cell]:border-b-0 [&_thead.rc-table-thead]:border-t-0"
       />
+
+      <Modal
+        isOpen={openDetail}
+        onClose={() => setopenDetail(false)}
+        size={"lg"}
+        overlayClassName="backdrop-blur"
+        // overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-lg"
+        // containerClassName="dark:bg-gray-100"
+        className="z-[9999] [&_.pointer-events-none]:overflow-visible"
+      >
+        <div className="m-auto px-7 pt-6 pb-8">
+          <ControlledTable
+            variant="modern"
+            showLoadingText={loading}
+            data={errorPoliza}
+            // @ts-ignore
+            columns={visibleColumns}
+            isLoading={loading}
+            className="rounded-md border border-muted text-sm shadow-sm [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:h-60 [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:justify-center [&_.rc-table-row:last-child_td.rc-table-cell]:border-b-0 [&_thead.rc-table-thead]:border-t-0"
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
