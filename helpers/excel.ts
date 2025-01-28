@@ -189,6 +189,115 @@ export const exportToExcelCustom2 = (
 //   saveAs(blob, `${name}`);
 // };
 
+// export const exportToExcelCustom = (
+//   data: TDocXLS[],
+//   name: string = "exported_data.xlsx"
+// ) => {
+//   const workbook = XLSX.utils.book_new();
+
+//   // Mapa para agrupar la información por 'descripcion'
+//   let resumenMap: { [key: string]: any } = {};
+//   let resumenHeaders: string[] = [];
+
+//   // Iterar sobre los datos para preparar el resumen
+//   data.forEach((obj) => {
+//     let head = obj["dataSheet"][0];
+//     if (!head) return;
+
+//     // Obtener los encabezados de la hoja actual
+//     const header = Object?.keys(head);
+
+//     // Guardar los encabezados para el resumen (solo la primera vez)
+//     if (resumenHeaders.length === 0) {
+//       resumenHeaders = [...header];
+//     }
+
+//     obj.dataSheet.forEach((row: any) => {
+//       const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
+//       const importeValue = parseFloat(row["importe"]); // Limpia el importe y lo convierte a número
+
+//       // Inicializar entradas en el mapa si no existen
+//       const positiveKey = `${descripcionValue} Positivos`;
+//       const negativeKey = `${descripcionValue} Negativos`;
+
+//       if (descripcionValue === "CFDI Cancelados Gas") {
+//         if (importeValue > 0) {
+//           // Procesar positivos
+//           if (!resumenMap[positiveKey]) {
+//             resumenMap[positiveKey] = {
+//               ...row,
+//               descripcion: positiveKey,
+//               importe: 0,
+//             }; // Cambia la descripción
+//           }
+//           resumenMap[positiveKey]["importe"] += importeValue;
+//         } else if (importeValue < 0) {
+//           // Procesar negativos
+//           if (!resumenMap[negativeKey]) {
+//             resumenMap[negativeKey] = {
+//               ...row,
+//               descripcion: negativeKey,
+//               importe: 0,
+//             }; // Cambia la descripción
+//           }
+//           resumenMap[negativeKey]["importe"] += importeValue;
+//         }
+//       } else {
+//         // Caso general para otras descripciones
+//         if (!resumenMap[descripcionValue]) {
+//           resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
+//         }
+//         if (!isNaN(importeValue)) {
+//           resumenMap[descripcionValue]["importe"] += importeValue;
+//         }
+//       }
+//     });
+//   });
+
+//   // Convertir el mapa de resumen en un array para crear la hoja de resumen
+//   const resumenData = Object.values(resumenMap);
+
+//   // Crear la hoja de resumen con los mismos encabezados
+//   const resumenSheet = XLSX.utils.json_to_sheet(resumenData, {
+//     header: resumenHeaders,
+//   });
+
+//   // Agregar la hoja de resumen como la primera hoja
+//   XLSX.utils.book_append_sheet(workbook, resumenSheet, "Resumen");
+
+//   console.log(data);
+//   // Ahora agregar las demás hojas
+//   data.forEach((obj, i) => {
+//     const worksheet = XLSX.utils.json_to_sheet(obj.dataSheet);
+
+//     // Asignar nombre dinámico según 'poliza'
+//     let sheetName = "Desconocido";
+
+//     let polizaValue = (obj.dataSheet[0] as any)?.poliza; // Suponiendo que 'poliza' es consistente en cada hoja
+//     let date = (obj.dataSheet[0] as any)?.createAt as Date; // Suponiendo que 'poliza' es consistente en cada hoja
+
+//     if (polizaValue === "V") {
+//       sheetName = "Ventas";
+//     } else if (polizaValue === "L") {
+//       sheetName = "Cobranza";
+//     } else if (polizaValue === "C") {
+//       sheetName = "Canceladas";
+//     }
+
+//     if (!polizaValue || !date)
+//       return toast.error(`La poliza ${obj?.nameSheet} no esta completa.`); //Como un continue;
+
+//     sheetName = sheetName + " " + moment(date).format("YYYY-MM-DD");
+
+//     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+//   });
+
+//   // Exportar el libro a un archivo Excel
+//   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+//   const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+//   saveAs(blob, `${name}`);
+// };
+
 export const exportToExcelCustom = (
   data: TDocXLS[],
   name: string = "exported_data.xlsx"
@@ -198,6 +307,9 @@ export const exportToExcelCustom = (
   // Mapa para agrupar la información por 'descripcion'
   let resumenMap: { [key: string]: any } = {};
   let resumenHeaders: string[] = [];
+
+  // Mapa para controlar nombres de hojas únicos
+  const sheetNameMap: { [key: string]: number } = {};
 
   // Iterar sobre los datos para preparar el resumen
   data.forEach((obj) => {
@@ -213,39 +325,35 @@ export const exportToExcelCustom = (
     }
 
     obj.dataSheet.forEach((row: any) => {
-      const descripcionValue = row["descripcion"]; // Asumimos que 'descripcion' es el nombre de la columna
-      const importeValue = parseFloat(row["importe"]); // Limpia el importe y lo convierte a número
+      const descripcionValue = row["descripcion"];
+      const importeValue = parseFloat(row["importe"]);
 
-      // Inicializar entradas en el mapa si no existen
       const positiveKey = `${descripcionValue} Positivos`;
       const negativeKey = `${descripcionValue} Negativos`;
 
       if (descripcionValue === "CFDI Cancelados Gas") {
         if (importeValue > 0) {
-          // Procesar positivos
           if (!resumenMap[positiveKey]) {
             resumenMap[positiveKey] = {
               ...row,
               descripcion: positiveKey,
               importe: 0,
-            }; // Cambia la descripción
+            };
           }
           resumenMap[positiveKey]["importe"] += importeValue;
         } else if (importeValue < 0) {
-          // Procesar negativos
           if (!resumenMap[negativeKey]) {
             resumenMap[negativeKey] = {
               ...row,
               descripcion: negativeKey,
               importe: 0,
-            }; // Cambia la descripción
+            };
           }
           resumenMap[negativeKey]["importe"] += importeValue;
         }
       } else {
-        // Caso general para otras descripciones
         if (!resumenMap[descripcionValue]) {
-          resumenMap[descripcionValue] = { ...row, importe: 0 }; // Inicializar importe a 0
+          resumenMap[descripcionValue] = { ...row, importe: 0 };
         }
         if (!isNaN(importeValue)) {
           resumenMap[descripcionValue]["importe"] += importeValue;
@@ -265,16 +373,14 @@ export const exportToExcelCustom = (
   // Agregar la hoja de resumen como la primera hoja
   XLSX.utils.book_append_sheet(workbook, resumenSheet, "Resumen");
 
-  console.log(data);
   // Ahora agregar las demás hojas
   data.forEach((obj, i) => {
     const worksheet = XLSX.utils.json_to_sheet(obj.dataSheet);
 
-    // Asignar nombre dinámico según 'poliza'
     let sheetName = "Desconocido";
 
-    let polizaValue = (obj.dataSheet[0] as any)?.poliza; // Suponiendo que 'poliza' es consistente en cada hoja
-    let date = (obj.dataSheet[0] as any)?.createAt as Date; // Suponiendo que 'poliza' es consistente en cada hoja
+    let polizaValue = (obj.dataSheet[0] as any)?.poliza;
+    let date = (obj.dataSheet[0] as any)?.createAt as Date;
 
     if (polizaValue === "V") {
       sheetName = "Ventas";
@@ -284,10 +390,26 @@ export const exportToExcelCustom = (
       sheetName = "Canceladas";
     }
 
-    if (!polizaValue || !date)
-      return toast.error(`La poliza ${obj?.nameSheet} no esta completa.`); //Como un continue;
+    if (!polizaValue || !date) {
+      return toast.error(`La poliza ${obj?.nameSheet} no está completa.`);
+    }
 
-    sheetName = sheetName + " " + moment(date).format("YYYY-MM-DD");
+    const formattedDate = moment(date).format("YYYY-MM-DD");
+    sheetName = `${sheetName} ${formattedDate}`;
+
+    // Verificar y ajustar nombres duplicados
+    if (sheetNameMap[sheetName]) {
+      const count = sheetNameMap[sheetName]++;
+      if (count === 1) {
+        sheetName += "-Invertido";
+      } else if (count === 2) {
+        sheetName += "-Ajustado";
+      } else {
+        sheetName += `-${count}`;
+      }
+    } else {
+      sheetNameMap[sheetName] = 1;
+    }
 
     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
   });

@@ -12,6 +12,7 @@ import {
   setPolizas,
 } from "./polizas_slice";
 import {
+  AjustarPolizaApi,
   CheckedPolizaAPi,
   CreatePolizaAllAPi,
   CreatePolizaApi,
@@ -131,6 +132,19 @@ export const RefreshPoliza = createAsyncThunk(
       error: "Error al recuperar Folio",
       loading: "Buscando folio contable",
       success: "Busqueda Completada",
+    });
+
+    return response;
+  }
+);
+
+export const AjustarPoliza = createAsyncThunk(
+  "AjustarPoliza",
+  async (poliza: Poliza): Promise<Poliza[]> => {
+    const response = await toast.promise(AjustarPolizaApi(poliza), {
+      error: "Error al ajustar poliza",
+      loading: "Ajustando polizas, revisando importe",
+      success: "Polizas Ajustadas",
     });
 
     return response;

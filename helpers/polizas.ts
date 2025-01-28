@@ -108,3 +108,16 @@ export const RefreshPolizaApi = async (poliza: Poliza): Promise<Poliza> => {
     throw new Error("Error al Mandar las polizas.");
   }
 };
+
+export const AjustarPolizaApi = async (poliza: Poliza): Promise<Poliza[]> => {
+  try {
+    const { status, data } = await api.post<Poliza[]>(
+      `/api/Poliza/Ajuste`,
+      poliza
+    );
+    if (status === 200) return data;
+    throw new Error("Error al ajustar poliza");
+  } catch (error) {
+    throw new Error("Error al ajustar las polizas.");
+  }
+};

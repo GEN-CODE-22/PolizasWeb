@@ -2,6 +2,7 @@ import { Poliza } from "@/interfaces/Poliza";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
 import {
+  AjustarPoliza,
   CheckedPoliza,
   PostedPoliza,
   RecoveryPostedPoliza,
@@ -117,6 +118,25 @@ export const PolizasSlice = createSlice({
         });
       })
       .addCase(PostedPoliza.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(AjustarPoliza.fulfilled, (state, action) => {
+        const nuevasPolizas = action.payload;
+
+        state.polizas = state.polizas
+          .filter(
+            (existingPoliza) =>
+              !nuevasPolizas.some(
+                (nuevaPoliza) => nuevaPoliza.id === existingPoliza.id
+              )
+          )
+          .concat(nuevasPolizas)
+          .sort(
+            (a, b) =>
+              new Date(b.createAt).getTime() - new Date(a.createAt).getTime()
+          );
+      })
+      .addCase(AjustarPoliza.rejected, (state, action) => {
         state.error = action.error.message;
       })
       .addCase(RecoveryPostedPoliza.fulfilled, (state, action) => {

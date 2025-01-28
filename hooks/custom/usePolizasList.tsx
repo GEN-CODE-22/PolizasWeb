@@ -8,6 +8,7 @@ import { HeaderCell } from "@/components/ui/TableV2";
 import { ActionIcon, Badge, Checkbox, Text, Tooltip } from "rizzui";
 import { PiEyeDuotone, PiFileXls, PiMoney } from "react-icons/pi";
 import {
+  AjustarPoliza,
   checkedAll,
   CheckedPoliza,
   GetPolizas,
@@ -29,7 +30,7 @@ import { DetallePoliza } from "@/components/content/polizas/DetallePoliza";
 import { convertMoney } from "@/utils/tools";
 import { TDocXLS } from "@/interfaces";
 import toast from "react-hot-toast";
-import { FcRefresh } from "react-icons/fc";
+import { FcCalculator, FcRefresh } from "react-icons/fc";
 import { ControlledTable } from "@/components/ui/controlled-table";
 
 interface DataType {
@@ -306,6 +307,10 @@ export const usePolizasList = (tipo?: string) => {
     let updateP = await dispatch(RefreshPoliza(row));
   };
 
+  const ajustePoliza = (poliza: Poliza) => {
+    let polizas = dispatch(AjustarPoliza(poliza));
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -498,6 +503,23 @@ export const usePolizasList = (tipo?: string) => {
                   </ActionIcon>
                 </Tooltip>
               )}
+              {row.estatus == "G" && (
+                <Tooltip
+                  size="sm"
+                  content={"Crear Poliza de ajuste"}
+                  placement="top"
+                  color="invert"
+                >
+                  <ActionIcon
+                    size="sm"
+                    variant="outline"
+                    onClick={() => ajustePoliza(row)}
+                  >
+                    <FcCalculator className="h-4 w-4" />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+
               {/* {row.estatus === "T" && (
               <Tooltip
                 size="sm"
