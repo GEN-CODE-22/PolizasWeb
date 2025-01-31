@@ -40,12 +40,28 @@ interface DataType {
 }
 // get status badge
 function getStatusBadge(status: string) {
-  switch (status) {
+  switch (status.trim()) {
     case "C":
       return (
         <div className="flex items-center">
           <Text className="ms-2 font-medium text-green-dark">
             Facturas Canceladas
+          </Text>
+        </div>
+      );
+    case "CC":
+      return (
+        <div className="flex items-center">
+          <Text className="ms-2 font-medium text-green-dark">
+            Facturas Canceladas Invertida
+          </Text>
+        </div>
+      );
+    case "CCC":
+      return (
+        <div className="flex items-center">
+          <Text className="ms-2 font-medium text-green-dark">
+            Facturas Canceladas Ajuste
           </Text>
         </div>
       );
@@ -55,10 +71,42 @@ function getStatusBadge(status: string) {
           <Text className="ms-2 font-medium text-green-dark">Ventas</Text>
         </div>
       );
+    case "VV":
+      return (
+        <div className="flex items-center">
+          <Text className="ms-2 font-medium text-green-dark">
+            Ventas Invertida
+          </Text>
+        </div>
+      );
+    case "VVV":
+      return (
+        <div className="flex items-center">
+          <Text className="ms-2 font-medium text-green-dark">
+            Ventas Ajuste
+          </Text>
+        </div>
+      );
     case "L":
       return (
         <div className="flex items-center">
           <Text className="ms-2 font-medium text-green-dark">Cobranza</Text>
+        </div>
+      );
+    case "LL":
+      return (
+        <div className="flex items-center">
+          <Text className="ms-2 font-medium text-green-dark">
+            Cobranza Invertida
+          </Text>
+        </div>
+      );
+    case "LLL":
+      return (
+        <div className="flex items-center">
+          <Text className="ms-2 font-medium text-green-dark">
+            Cobranza Ajuste{" "}
+          </Text>
         </div>
       );
     default:
@@ -332,6 +380,7 @@ export const usePolizasList = (tipo?: string) => {
           <Text className="text-sm">{row.id}</Text>
         ),
       },
+      // Tipo
       {
         title: (
           <HeaderCell

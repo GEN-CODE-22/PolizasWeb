@@ -382,11 +382,11 @@ export const exportToExcelCustom = (
     let polizaValue = (obj.dataSheet[0] as any)?.poliza;
     let date = (obj.dataSheet[0] as any)?.createAt as Date;
 
-    if (polizaValue === "V") {
+    if ((polizaValue as string).trim().includes("V")) {
       sheetName = "Ventas";
-    } else if (polizaValue === "L") {
+    } else if ((polizaValue as string).trim().includes("L")) {
       sheetName = "Cobranza";
-    } else if (polizaValue === "C") {
+    } else if ((polizaValue as string).trim().includes("C")) {
       sheetName = "Canceladas";
     }
 
