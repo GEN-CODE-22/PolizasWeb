@@ -43,7 +43,7 @@ export interface Account {
 }
 
 export interface AuthSesion {
-  user: Account;
+  user: string;
   serversAuth: string[];
 }
 

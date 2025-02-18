@@ -18,10 +18,7 @@ export default function Auth() {
     } else if (status === "authenticated") {
       let data = session.user as AuthSesion;
 
-      console.log(data);
-      dispatch(
-        setUser({ user: data.user.usr_ucve, serverAuth: data.serversAuth })
-      );
+      dispatch(setUser({ user: data.user, serverAuth: data.serversAuth }));
     }
   }, [status]);
 

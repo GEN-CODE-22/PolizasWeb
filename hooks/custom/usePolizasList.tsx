@@ -468,7 +468,7 @@ export const usePolizasList = (tipo?: string) => {
           return (
             <Checkbox
               checked={value === 1}
-              disabled={!cuadra || row.estatus === "G"}
+              disabled
               value={value}
               label={
                 <span
@@ -481,13 +481,13 @@ export const usePolizasList = (tipo?: string) => {
                   />
                 </span>
               }
-              onChange={(e) =>
-                onChange({
-                  ...row,
-                  check: e.target.checked ? 1 : 0,
-                  estatus: e.target.checked ? "T" : "P",
-                })
-              }
+              // onChange={(e) =>
+              //   onChange({
+              //     ...row,
+              //     check: e.target.checked ? 1 : 0,
+              //     estatus: e.target.checked ? "T" : "P",
+              //   })
+              // }
             />
           );
         },

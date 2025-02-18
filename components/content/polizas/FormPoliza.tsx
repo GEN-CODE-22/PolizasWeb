@@ -21,6 +21,11 @@ export const FormPoliza = () => {
   });
 
   const { user } = useSelector<StoreApp, AppState>((s) => s.app);
+
+  let superU = user?.trim() === "contagrl" || user?.trim() === "fuente";
+
+  console.log(superU);
+
   const { loading } = useSelector<StoreApp, PolizasState>((s) => s.polizas);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -109,7 +114,7 @@ export const FormPoliza = () => {
             className="[&>label>span]:font-medium"
             options={tipoPoliza}
             value={poliza}
-            // disabled
+            disabled={!superU}
             //    onChange={(e) => setPoliza(e.target.value as string)}
             onChange={(e) => {
               setPoliza(e as any);
@@ -123,6 +128,7 @@ export const FormPoliza = () => {
 
         <Input
           type="date"
+          disabled={!superU}
           size={isMedium ? "lg" : "xl"}
           label="Fecha de Poliza"
           placeholder="Coloca la fecha de la poliza"
@@ -150,10 +156,14 @@ export const FormPoliza = () => {
         </div>
 
         <Button
-          className="w-full"
+          className={cn(
+            " w-full",
+            !superU && "bg-gray-300 text-gray-500 cursor-not-allowed"
+          )}
           type="submit"
           size={isMedium ? "lg" : "xl"}
           isLoading={loading}
+          disabled={!superU}
         >
           Crear Poliza
         </Button>
