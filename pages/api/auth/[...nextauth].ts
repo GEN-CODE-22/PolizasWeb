@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Credenciales incorrectos");
           }
           let usr: any = {
-            user: data.user.usr_ucve,
+            user: data.user,
             serversAuth: data.serversAuth,
             server: (credencials as any).server,
           };
