@@ -31,12 +31,12 @@ export const ProfileMenu: FC<Props> = ({
         >
           <Avatar
             // src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars/avatar-11.webp"
-            name={user ?? "Usuario"}
+            name={user?.usr_ucve ?? "Usuario"}
             className={cn("!h-9 w-9 sm:!h-10 sm:!w-10", avatarClassName)}
           />
           {!!username && (
             <span className="username hidden text-gray-200 dark:text-gray-700 md:inline-flex">
-              Hola, {user}
+              Hola, {user?.usr_ucve}
             </span>
           )}
         </button>
@@ -45,10 +45,10 @@ export const ProfileMenu: FC<Props> = ({
       <Popover.Content className="z-[9999] p-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100">
         <div className="w-64 text-left rtl:text-right">
           <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
-            <Avatar name={user ?? "Usuario"} />
+            <Avatar name={user?.usr_ucve ?? "Usuario"} />
             <div className="ms-3">
               <Title as="h6" className="font-semibold uppercase">
-                {user}
+                {user?.usr_ucve}
               </Title>
               <Text className="text-gray-600 uppercase">{server}</Text>
             </div>

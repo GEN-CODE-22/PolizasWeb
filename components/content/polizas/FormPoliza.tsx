@@ -22,9 +22,9 @@ export const FormPoliza = () => {
 
   const { user } = useSelector<StoreApp, AppState>((s) => s.app);
 
-  let superU = user?.trim() === "contagrl" || user?.trim() === "fuente";
-
-  console.log(superU);
+  let superU =
+    user?.usr_ucve?.trim() === "contagrl" ||
+    user?.usr_ucve?.trim() === "fuente";
 
   const { loading } = useSelector<StoreApp, PolizasState>((s) => s.polizas);
 
@@ -115,7 +115,6 @@ export const FormPoliza = () => {
             options={tipoPoliza}
             value={poliza}
             disabled={!superU}
-            //    onChange={(e) => setPoliza(e.target.value as string)}
             onChange={(e) => {
               setPoliza(e as any);
               setValue("tipo", (e as any).value as any);

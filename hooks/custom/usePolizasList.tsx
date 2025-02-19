@@ -481,13 +481,6 @@ export const usePolizasList = (tipo?: string) => {
                   />
                 </span>
               }
-              // onChange={(e) =>
-              //   onChange({
-              //     ...row,
-              //     check: e.target.checked ? 1 : 0,
-              //     estatus: e.target.checked ? "T" : "P",
-              //   })
-              // }
             />
           );
         },
@@ -672,6 +665,26 @@ export const usePolizasList = (tipo?: string) => {
     dispatch(RecoveryPostedPoliza());
   };
 
+  const esSaldoCero = (): boolean => {
+    return (
+      polizas.reduce((total, poliza) => {
+        return (
+          total +
+          poliza.detalles.reduce((sum, detalle) => sum + detalle.importe, 0)
+        );
+      }, 0) === 0
+    );
+  };
+
+  const GetDiferencia = (): number => {
+    return polizas.reduce(
+      (total, poliza) =>
+        total +
+        poliza.detalles.reduce((sum, detalle) => sum + detalle.importe, 0),
+      0
+    );
+  };
+
   return {
     polizas,
     visibleColumns,
@@ -705,5 +718,7 @@ export const usePolizasList = (tipo?: string) => {
     openDetail,
     setopenDetail,
     errorPoliza,
+    esSaldoCero,
+    GetDiferencia,
   };
 };

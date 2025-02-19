@@ -1,9 +1,9 @@
-import { Breadcrumb } from "@/interfaces";
+import { Account, Breadcrumb } from "@/interfaces";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface AppState {
   server?: string;
-  user?: string;
+  user?: Account;
   serverAuth: string[];
   breadcrumb: Breadcrumb[];
 }
@@ -22,7 +22,7 @@ export const AppSlice = createSlice({
     },
     setUser: (
       state,
-      action: PayloadAction<{ user: string; serverAuth?: string[] }>
+      action: PayloadAction<{ user: Account; serverAuth?: string[] }>
     ) => {
       state.user = action.payload.user;
       state.serverAuth = action.payload.serverAuth ?? state.serverAuth;

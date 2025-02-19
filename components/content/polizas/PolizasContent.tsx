@@ -8,6 +8,7 @@ import { Poliza } from "@/interfaces/Poliza";
 import cn from "@/utils/class-names";
 import { FaCheckDouble } from "react-icons/fa";
 import { BiGitPullRequest } from "react-icons/bi";
+import { convertMoney } from "@/utils/tools";
 
 interface Props {
   tipo?: string;
@@ -47,6 +48,8 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
     openDetail,
     setopenDetail,
     errorPoliza,
+    esSaldoCero,
+    GetDiferencia,
   } = usePolizasList(tipo);
 
   return (
@@ -63,11 +66,25 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
         onClickResult={GetDataPolizas}
         options={
           <div>
-            <Tooltip content={"Seleccionar Todo"}>
+            <Tooltip
+              content={
+                GetDiferencia() !== 0
+                  ? `Diferencia: ${convertMoney(GetDiferencia())}`
+                  : "Sin diferencia"
+              }
+            >
               <Button
                 onClick={checked}
                 variant={"outline"}
-                className={cn("me-2.5 h-9 pe-3 ps-2.5")}
+                // className={cn("me-2.5 h-9 pe-3 ps-2.5")}
+
+                className={cn(
+                  "me-2.5 h-9 pe-3 ps-2.5",
+                  !esSaldoCero()
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-100 text-blue-500"
+                )}
+                disabled={!esSaldoCero()}
               >
                 <FaCheckDouble className="h-[25px] w-[25px]" />
               </Button>

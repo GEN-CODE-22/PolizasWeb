@@ -42,7 +42,7 @@ const Catalogos = ({ children }: any) => {
       dispatch(GetUnidades()).unwrap(),
       dispatch(GetCaja()).unwrap(),
     ]);
-    console.log({ results });
+
     dispatch(setLoading(false));
   };
 
