@@ -1,7 +1,7 @@
 import { TableFooter } from "@/components/Shared/table-footer";
 import { ControlledTable } from "@/components/ui/controlled-table";
 import { usePolizasList } from "@/hooks/custom/usePolizasList";
-import React, { FC, memo } from "react";
+import React, { FC, memo, useEffect, useState } from "react";
 import { FilterElement } from "./FilterElement";
 import { Button, Modal, Tooltip } from "rizzui";
 import { Poliza } from "@/interfaces/Poliza";
@@ -52,6 +52,14 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
     GetDiferencia,
   } = usePolizasList(tipo);
 
+  const [cuadra, setCuadra] = useState(false);
+
+  useEffect(() => {
+    const diferencia = GetDiferencia();
+    const epsilon = 1e-9; // Tolerancia para redondeo en punto flotante
+    setCuadra(Math.abs(diferencia) < epsilon);
+  }, [polizas]); // Se actualiza cuando `polizas` cambia
+
   return (
     <div className="block space-y-4">
       {isPendingPostPS && (
@@ -68,7 +76,7 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
           <div>
             <Tooltip
               content={
-                GetDiferencia() !== 0
+                !cuadra
                   ? `Diferencia: ${convertMoney(GetDiferencia())}`
                   : "Sin diferencia"
               }
@@ -80,11 +88,11 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
 
                 className={cn(
                   "me-2.5 h-9 pe-3 ps-2.5",
-                  !esSaldoCero()
+                  !cuadra
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                     : "bg-blue-100 text-blue-500"
                 )}
-                disabled={!esSaldoCero()}
+                disabled={!cuadra}
               >
                 <FaCheckDouble className="h-[25px] w-[25px]" />
               </Button>
