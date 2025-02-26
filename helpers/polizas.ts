@@ -34,6 +34,19 @@ export const CreatePolizaApi = async (
   }
 };
 
+export const AjustePolizaDiaAbiertoApi = async (
+  fecha: Date
+): Promise<Poliza[]> => {
+  try {
+    const response = await api.post<Poliza[]>(`/api/Poliza/RefreshImportes`, {
+      fecha,
+    });
+    return response.data;
+  } catch (error) {
+    return [];
+  }
+};
+
 export const CreatePolizaAllAPi = async (data: object): Promise<Poliza[]> => {
   try {
     const response = await api.post<Poliza[]>(

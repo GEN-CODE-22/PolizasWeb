@@ -8,8 +8,8 @@ import cn from "@/utils/class-names";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, StoreApp } from "@reduxjs/toolkit";
 import {
+  AjustePolizaDiaAbierto,
   CreatePoliza,
-  CreatePolizaAll,
   PolizasState,
 } from "@/redux/slices/polizas";
 import { AppState } from "@/redux/slices/app";
@@ -18,23 +18,23 @@ import moment from "moment";
 export const FormPoliza = () => {
   const methods = useForm<PolizaInput>({
     resolver: zodResolver(polizaSchema),
+    defaultValues: {
+      tipo: "X",
+    },
   });
 
   const { user } = useSelector<StoreApp, AppState>((s) => s.app);
-
-  let superU =
-    user?.usr_ucve?.trim() === "contagrl" ||
-    user?.usr_ucve?.trim() === "fuente";
+  const isFuente =
+    user?.usr_ucve?.trim() === "fuente" ||
+    user?.usr_ucve?.trim() === "contagrl";
 
   const { loading } = useSelector<StoreApp, PolizasState>((s) => s.polizas);
-
   const dispatch = useDispatch<AppDispatch>();
-
   const isMedium = useMedia("(max-width: 1200px)", false);
 
   const [poliza, setPoliza] = useState<SelectOption>({
-    value: "A",
-    label: "Conjunto de Polizas",
+    value: "X",
+    label: "Ajustes de Poliza",
   });
   const [status, setStatus] = useState<SelectOption>({
     value: "P",
@@ -42,13 +42,8 @@ export const FormPoliza = () => {
   });
 
   const onSubmit: SubmitHandler<PolizaInput> = async (values) => {
-    if (poliza.value === "A") {
-      dispatch(
-        CreatePolizaAll({
-          Fecha: moment(values.fecha).format(),
-          CreateBy: user,
-        })
-      );
+    if (poliza.value === "X") {
+      dispatch(AjustePolizaDiaAbierto(moment(values.fecha).toDate()));
     } else {
       dispatch(
         CreatePoliza({
@@ -57,7 +52,9 @@ export const FormPoliza = () => {
               ? 0
               : values.tipo === "L"
                 ? 2
-                : values.tipo === "C" && 1,
+                : values.tipo === "C"
+                  ? 1
+                  : undefined,
           Fecha: new Date(values.fecha),
           CreateBy: user,
         })
@@ -65,69 +62,47 @@ export const FormPoliza = () => {
     }
   };
 
-  const { formState, trigger, register, setValue } = methods;
+  const { formState, register, setValue, watch } = methods;
   const { errors } = formState;
 
-  const tipoPoliza: SelectOption[] = [
-    {
-      value: "C",
-      label: "Facturas Canceladas",
-    },
-    {
-      value: "V",
-      label: "Poliza Ventas",
-    },
-    {
-      value: "L",
-      label: "Poliza Cobranza",
-    },
-    {
-      value: "A",
-      label: "Conjunto de Polizas",
-    },
-  ];
+  const tipoPoliza: SelectOption[] = isFuente
+    ? [
+        { value: "X", label: "Ajustes de Poliza" },
+        { value: "C", label: "Facturas Canceladas" },
+        { value: "V", label: "Poliza Ventas" },
+        { value: "L", label: "Poliza Cobranza" },
+        { value: "A", label: "Conjunto de Polizas" },
+      ]
+    : [{ value: "X", label: "Ajustes de Poliza" }];
 
   const edo: SelectOption[] = [
-    {
-      value: "P",
-      label: "Pendiente",
-    },
-    {
-      value: "C",
-      label: "Cancelada",
-    },
-    {
-      value: "E",
-      label: "Posteada",
-    },
+    { value: "P", label: "Pendiente" },
+    { value: "C", label: "Cancelada" },
+    { value: "E", label: "Posteada" },
   ];
 
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
-        className="space-y-5 lg:space-y-6 md:w-2/3 w-full  "
+        className="space-y-5 lg:space-y-6 md:w-2/3 w-full"
       >
-        <div className="flex items-center justify-between">
-          <Select
-            label="Tipo de Poliza"
-            className="[&>label>span]:font-medium"
-            options={tipoPoliza}
-            value={poliza}
-            disabled={!superU}
-            onChange={(e) => {
-              setPoliza(e as any);
-              setValue("tipo", (e as any).value as any);
-            }}
-            selectClassName={cn(
-              "h-16 outline-0 border-2 ring-0 border-gray-200 hover:!border-gray-100 hover:!ring-0 focus:border-gray-100 focus:!ring-0"
-            )}
-          />
-        </div>
+        <Select
+          label="Tipo de Poliza"
+          className="[&>label>span]:font-medium"
+          options={tipoPoliza}
+          value={poliza}
+          onChange={(e) => {
+            setPoliza(e as any);
+            setValue("tipo", (e as any).value as any);
+          }}
+          selectClassName={cn(
+            "h-16 outline-0 border-2 border-gray-200 hover:border-gray-100 focus:border-gray-100"
+          )}
+        />
 
         <Input
           type="date"
-          disabled={!superU}
           size={isMedium ? "lg" : "xl"}
           label="Fecha de Poliza"
           placeholder="Coloca la fecha de la poliza"
@@ -136,35 +111,28 @@ export const FormPoliza = () => {
           error={errors.fecha?.message}
         />
 
-        <div className="flex items-center justify-between">
-          <Select
-            label="Estatus"
-            className="[&>label>span]:font-medium"
-            options={edo}
-            value={status}
-            disabled
-            //    onChange={(e) => setPoliza(e.target.value as string)}
-            onChange={(e) => {
-              setStatus(e as any);
-              setValue("estatus", (e as any).value as any);
-            }}
-            selectClassName={cn(
-              "h-16 outline-0 border-2 ring-0 border-gray-200 hover:!border-gray-100 hover:!ring-0 focus:border-gray-100 focus:!ring-0"
-            )}
-          />
-        </div>
+        <Select
+          label="Estatus"
+          className="[&>label>span]:font-medium"
+          options={edo}
+          value={status}
+          disabled
+          onChange={(e) => {
+            setStatus(e as any);
+            setValue("estatus", (e as any).value as any);
+          }}
+          selectClassName={cn(
+            "h-16 outline-0 border-2 border-gray-200 hover:border-gray-100 focus:border-gray-100"
+          )}
+        />
 
         <Button
-          className={cn(
-            " w-full",
-            !superU && "bg-gray-300 text-gray-500 cursor-not-allowed"
-          )}
+          className="w-full"
           type="submit"
           size={isMedium ? "lg" : "xl"}
           isLoading={loading}
-          disabled={!superU}
         >
-          Crear Poliza
+          {poliza.value === "X" ? "Ajuste de Polizas" : "Crear Poliza"}
         </Button>
       </form>
     </FormProvider>

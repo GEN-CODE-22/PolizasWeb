@@ -107,32 +107,32 @@ export const carbonMenuItems: MenuItemsType[] = [
     title: "Apps Kit",
     icon: PiAppStoreLogoDuotone,
     menuItems: [
-      {
-        name: "Poliza Ventas",
-        description: "",
-        href: "/poliza/ventas",
-        icon: PiInvoiceDuotone,
-      },
+      // {
+      //   name: "Poliza Ventas",
+      //   description: "",
+      //   href: "/poliza/ventas",
+      //   icon: PiInvoiceDuotone,
+      // },
       {
         name: "Polizas",
         description: "",
         href: "/poliza/all",
         icon: PiInvoiceDuotone,
       },
+      // {
+      //   name: "Poliza Canceladas",
+      //   description: "",
+      //   href: "/poliza/canceladas",
+      //   icon: PiInvoiceDuotone,
+      // },
+      // {
+      //   name: "Poliza Cobranza",
+      //   description: "",
+      //   href: "/poliza/cobranza",
+      //   icon: PiInvoiceDuotone,
+      // },
       {
-        name: "Poliza Canceladas",
-        description: "",
-        href: "/poliza/canceladas",
-        icon: PiInvoiceDuotone,
-      },
-      {
-        name: "Poliza Cobranza",
-        description: "",
-        href: "/poliza/cobranza",
-        icon: PiInvoiceDuotone,
-      },
-      {
-        name: "Crear Poliza",
+        name: "Crear/Actualizar Poliza",
         description: "",
         href: "/poliza/create",
         icon: PiStackThin,

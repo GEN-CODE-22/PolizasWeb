@@ -13,6 +13,7 @@ import {
 } from "./polizas_slice";
 import {
   AjustarPolizaApi,
+  AjustePolizaDiaAbiertoApi,
   CheckedPolizaAPi,
   CreatePolizaAllAPi,
   CreatePolizaApi,
@@ -67,6 +68,7 @@ export const CreatePoliza = (data: object) => {
     toast.success("Poliza creada 👍🏻");
   };
 };
+
 export const CreatePolizaAll = (data: object) => {
   return async (dispatch: AppDispatch, _: () => StoreApp) => {
     toast.loading("Creando Polizas 🔋");
@@ -144,6 +146,20 @@ export const AjustarPoliza = createAsyncThunk(
     const response = await toast.promise(AjustarPolizaApi(poliza), {
       error: "Error al ajustar poliza",
       loading: "Ajustando polizas, revisando importe",
+      success: "Polizas Ajustadas",
+    });
+
+    return response;
+  }
+);
+
+export const AjustePolizaDiaAbierto = createAsyncThunk(
+  "AjustePolizaDiaAbierto",
+  async (fecha: Date): Promise<Poliza[]> => {
+    console.log(fecha);
+    const response = await toast.promise(AjustePolizaDiaAbiertoApi(fecha), {
+      error: "Error al ajustar poliza",
+      loading: "Calculando Importes",
       success: "Polizas Ajustadas",
     });
 
