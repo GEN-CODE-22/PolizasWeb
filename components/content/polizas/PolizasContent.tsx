@@ -56,9 +56,13 @@ export const PolizasContent: FC<Props> = ({ tipo }) => {
 
   useEffect(() => {
     const diferencia = GetDiferencia();
-    const epsilon = 1e-9; // Tolerancia para redondeo en punto flotante
-    setCuadra(Math.abs(diferencia) < epsilon);
-  }, [polizas]); // Se actualiza cuando `polizas` cambia
+    const epsilon = 1e-8; // Aumentamos la tolerancia para evitar errores de precisión
+
+    const cuadra = Math.abs(diferencia) < epsilon; // Comparamos con un epsilon más grande
+
+    console.log(cuadra, diferencia, epsilon);
+    setCuadra(cuadra);
+  }, [polizas]);
 
   return (
     <div className="block space-y-4">
